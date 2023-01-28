@@ -99,6 +99,7 @@ export default function App() {
                 <View style={{ flex: 1, margin: '10% 30%' }}>
                     <View style={{ flex: 1, backgroundColor: '#fff', justifyContent: 'center' }}>
 
+                        <Text>Think here:</Text>
                         <TextInput
                             mode='outlined'
                             multiline={true}
@@ -109,7 +110,12 @@ export default function App() {
                         />
                         <Gap />
                         {/* <Button onPress={doIt}><Text>do it</Text></Button> */}
-                        <Button onPress={onPressSave}><Text>save</Text></Button>
+                        <Button
+                            onPress={onPressSave}
+                            mode="contained"
+
+
+                        ><Text>save</Text></Button>
 
                         <StatusBar style="auto" />
                     </View >
