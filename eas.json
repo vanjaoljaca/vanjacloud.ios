@@ -10,7 +10,7 @@
     },
     "development": {
       "developmentClient": true,
-      "channel": "development",
+      "channel": "main",
       "distribution": "internal",
       "ios": {
         "resourceClass": "m1-medium"
