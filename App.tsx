@@ -109,7 +109,7 @@ export default function App() {
                         />
                         <Gap />
                         {/* <Button onPress={doIt}><Text>do it</Text></Button> */}
-                        <Button onPress={onPressSave}><Text>save it</Text></Button>
+                        <Button onPress={onPressSave}><Text>save</Text></Button>
 
                         <StatusBar style="auto" />
                     </View >
