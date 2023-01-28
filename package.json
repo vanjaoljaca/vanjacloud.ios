@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@notionhq/client": "^2.2.3",
     "@types/react": "~18.0.24",
     "@types/react-native": "~0.70.6",
     "appcenter": "^4.4.5",

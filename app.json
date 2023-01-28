@@ -41,7 +41,7 @@
     },
     "owner": "vanjalolz",
     "runtimeVersion": {
-      "policy": "appVersion"
+      "policy": "sdkVersion"
     }
   }
 }
