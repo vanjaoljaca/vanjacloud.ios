@@ -11,12 +11,16 @@ import { Client } from "@notionhq/client"
 
 import { Provider as PaperProvider } from 'react-native-paper';
 
+import * as Device from 'expo-device';
 
 // Initializing a client
 const notion = new Client({
     auth: keys.notion
 })
-const dbid = '1ccbf2c452d6453d94bc462a8c83c200'
+const proddbid = '1ccbf2c452d6453d94bc462a8c83c200'
+const testdbid = '4ef4fb0714c9441d94b06c826e74d5d3'
+
+const dbid = Device.isDevice ? proddbid : testdbid;
 
 async function test() {
 
@@ -86,7 +90,7 @@ export default function App() {
     async function onPressSave() {
         let r = await saveIt(inputText);
         console.log('saved it', r)
-        setText('');
+        setInputText('');
     }
 
     return (
@@ -109,6 +113,7 @@ export default function App() {
 
                         <StatusBar style="auto" />
                     </View >
+                    <View style={{ height: 400 }} />
                 </View>
             </SafeAreaView>
         </PaperProvider>

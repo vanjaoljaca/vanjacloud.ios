@@ -5,17 +5,19 @@
   "build": {
     "dev": {
       "ios": {
-          "simulator": true
+        "simulator": true
       }
     },
     "development": {
       "developmentClient": true,
+      "channel": "development",
       "distribution": "internal",
       "ios": {
         "resourceClass": "m1-medium"
       }
     },
     "preview": {
+      "channel": "preview",
       "distribution": "internal"
     }
   },
