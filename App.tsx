@@ -1,9 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
+
+// import { Button } from 'react-native-ui-kitten';
+import { Button, TextInput, Text } from 'react-native-paper'
+
 // https://developers.notion.com/reference/intro
 import keys from './keys';
 import { Client } from "@notionhq/client"
+
+import { Provider as PaperProvider } from 'react-native-paper';
+
 
 // Initializing a client
 const notion = new Client({
@@ -35,6 +42,10 @@ async function test() {
     }
     console.log('--------')
     return (res.results[0] as any).properties.Note.title[0].plain_text;
+}
+
+function Gap() {
+    return <View style={{ height: 40 }} />
 }
 
 export default function App() {
@@ -85,23 +96,28 @@ export default function App() {
     }
 
     return (
-        <View style={{ flex: 1, backgroundColor: '#fff', justifyContent: 'center' }}>
-            {/* <View style={styles.container}> */}
-            <Text>IT WORKS</Text>
-            <Text>and this is how you push a change</Text>
-            <Text>{text}</Text>
-            {/* multiline input with red background color: */}
-            <TextInput style={{ backgroundColor: 'red' }}
-                multiline={true}
-                numberOfLines={4}
-                onChangeText={text => setInputText(text)}
-                value={inputText}
-            />
+        <PaperProvider>
+            <SafeAreaView style={{ flex: 1 }}>
+                <View style={{ flex: 1, margin: '10% 30%' }}>
+                    <View style={{ flex: 1, backgroundColor: '#fff', justifyContent: 'center' }}>
 
-            <Button onPress={doIt} title='Do It' />
-            <Button onPress={onPressSave} title='Save It' />
-            <StatusBar style="auto" />
-        </View >
+                        <TextInput
+                            mode='outlined'
+                            multiline={true}
+                            onChangeText={text => setInputText(text)}
+                            value={inputText}
+                            label="Note"
+                            height={200}
+                        />
+                        <Gap />
+                        {/* <Button onPress={doIt}><Text>do it</Text></Button> */}
+                        <Button onPress={onPressSave}><Text>save it</Text></Button>
+
+                        <StatusBar style="auto" />
+                    </View >
+                </View>
+            </SafeAreaView>
+        </PaperProvider>
     );
 }
 
