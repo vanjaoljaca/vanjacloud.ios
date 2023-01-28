@@ -62,12 +62,6 @@ export default function App() {
 
 
         const response = await notion.pages.create({
-            cover: {
-                type: "external",
-                external: {
-                    url: "https://upload.wikimedia.org/wikipedia/commons/6/62/Tuscankale.jpg"
-                }
-            },
             icon: {
                 type: "emoji",
                 emoji: "🐿️"
@@ -92,7 +86,7 @@ export default function App() {
     async function onPressSave() {
         let r = await saveIt(inputText);
         console.log('saved it', r)
-        setText(r);
+        setText('');
     }
 
     return (
