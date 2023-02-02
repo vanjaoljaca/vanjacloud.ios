@@ -4,11 +4,39 @@ import React, { useState, useEffect } from 'react';
 
 import { Button, TextInput, Text } from 'react-native-paper'
 
+//https://www.npmjs.com/package/node-libs-react-native
+
 // https://github.com/nicholascelestin/replicate-js
 // https://replicate.com/openai/whisper/versions/30414ee7c4fffc37e260fcab7842b5be470b9b840f2b608f5baa9bbef9a259ed/api#run
 
 // https://developers.notion.com/reference/intro
-import keys from './keys';
+
+// try {
+//     let t = require('./eas.json')
+//     console.log('EAS FOUND!!!', t)
+// } catch (e) {
+//     console.log('eas.json not found')
+// }
+
+import vanjacloud from 'vanjacloudjs.shared';
+console.log(vanjacloud.myThing)
+import * as z from 'vanjacloudjs.private/keys';
+console.log('prviate', z)
+
+// import * as eas from './eas.json'
+
+// try {
+
+//     console.log('eas import', eas);
+// } catch (e) {
+//     console.log('eas.json not found')
+// }
+
+// let k = require('../keys.json')
+// console.log('require is fine...', k);
+
+
+
 import { Client } from "@notionhq/client"
 
 import { Provider as PaperProvider } from 'react-native-paper';
@@ -19,12 +47,12 @@ import MyModule from 'vanjacloudjs.shared';
 
 console.log('**************************************************')
 console.log('MyModule', MyModule)
-console.log(MyModule.working)
+console.log(MyModule.myThing)
 console.log('**************************************************')
 
 // Initializing a client
 const notion = new Client({
-    auth: keys.notion
+    auth: vanjacloud.Keys.notion
 })
 const proddbid = '1ccbf2c452d6453d94bc462a8c83c200'
 const testdbid = '4ef4fb0714c9441d94b06c826e74d5d3'
