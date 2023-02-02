@@ -15,6 +15,13 @@ import { Provider as PaperProvider } from 'react-native-paper';
 
 import * as Device from 'expo-device';
 
+import MyModule from 'vanjacloudjs.shared';
+
+console.log('**************************************************')
+console.log('MyModule', MyModule)
+console.log(MyModule.working)
+console.log('**************************************************')
+
 // Initializing a client
 const notion = new Client({
     auth: keys.notion
