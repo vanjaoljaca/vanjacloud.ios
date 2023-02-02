@@ -1,3 +1,5 @@
+// todo: https://docs.expo.dev/build-reference/variables/
+// put secrets in eas so this repo can be made public
 export default {
     openai: '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',
     notion: 'secret_i2La7aDHDagTttv2j9Gzj3FQXi5TMTYEfuC889hbMAr',

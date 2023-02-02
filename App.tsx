@@ -2,8 +2,10 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
 
-// import { Button } from 'react-native-ui-kitten';
 import { Button, TextInput, Text } from 'react-native-paper'
+
+// https://github.com/nicholascelestin/replicate-js
+// https://replicate.com/openai/whisper/versions/30414ee7c4fffc37e260fcab7842b5be470b9b840f2b608f5baa9bbef9a259ed/api#run
 
 // https://developers.notion.com/reference/intro
 import keys from './keys';
