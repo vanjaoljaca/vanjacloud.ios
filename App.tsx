@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { Button, TextInput, Text } from 'react-native-paper'
 
@@ -18,10 +18,12 @@ import { Button, TextInput, Text } from 'react-native-paper'
 //     console.log('eas.json not found')
 // }
 
+
+
 import vanjacloud from 'vanjacloudjs.shared';
-console.log(vanjacloud.myThing)
-import * as z from 'vanjacloudjs.private/keys';
-console.log('prviate', z)
+// console.log(vanjacloud.myThing)
+// import * as z from 'vanjacloudjs.private/keys';
+// console.log('prviate', z)
 
 // import * as eas from './eas.json'
 
@@ -46,8 +48,11 @@ import * as Device from 'expo-device';
 import MyModule from 'vanjacloudjs.shared';
 
 console.log('**************************************************')
+console.log(process.env.NOTION_SECRET)
+console.log(process.env.NOTION_SECRET)
+console.log(process.env)
 console.log('MyModule', MyModule)
-console.log(MyModule.myThing)
+console.log(MyModule)
 console.log('**************************************************')
 
 // Initializing a client
@@ -130,6 +135,7 @@ export default function App() {
         setInputText('');
     }
 
+    // @ts-ignore
     return (
         <PaperProvider>
             <SafeAreaView style={{ flex: 1 }}>
@@ -150,13 +156,18 @@ export default function App() {
                         <Button
                             onPress={onPressSave}
                             mode="contained"
-
-
                         ><Text>save</Text></Button>
+
+
+
 
                         <StatusBar style="auto" />
                     </View >
-                    <View style={{ height: 400 }} />
+
+
+                    <View style={{ height: 400 }}>
+                        <Text>{process.env.NOTION_SECRET}</Text>
+                    </View>
                 </View>
             </SafeAreaView>
         </PaperProvider>
