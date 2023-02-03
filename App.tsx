@@ -97,6 +97,9 @@ function Gap() {
 export default function App() {
     const [text, setText] = useState('unset');
     const [inputText, setInputText] = useState('');
+    const [saving, setSaving] = useState(false);
+    const [errorText, setErrorText] = useState('testing');
+
     async function doIt() {
         let r = await test();
         console.log('did it', r)
@@ -104,34 +107,42 @@ export default function App() {
     }
 
     async function saveIt(text: string) {
-        console.log('saving', text)
+        try {
+            console.log('saving', text)
 
-
-        const response = await notion.pages.create({
-            icon: {
-                type: "emoji",
-                emoji: "🐿️"
-            },
-            parent: {
-                type: "database_id",
-                database_id: dbid
-            },
-            properties: {
-                title: [
-                    {
-                        text: {
-                            content: text
+            // todo: what if this fails??
+            const response = await notion.pages.create({
+                icon: {
+                    type: "emoji",
+                    emoji: "🐿️"
+                },
+                parent: {
+                    type: "database_id",
+                    database_id: dbid
+                },
+                properties: {
+                    title: [
+                        {
+                            text: {
+                                content: text
+                            }
                         }
-                    }
-                ]
-            }
-        });
-        return text;
+                    ]
+                }
+            });
+
+            return text;
+        } catch (error) {
+            console.error(error)
+            setErrorText(JSON.stringify(error));
+        }
     }
 
     async function onPressSave() {
+        setSaving(true)
         let r = await saveIt(inputText);
         console.log('saved it', r)
+        setSaving(false)
         setInputText('');
     }
 
@@ -166,7 +177,7 @@ export default function App() {
 
 
                     <View style={{ height: 400 }}>
-                        <Text>{vanjacloud.Keys.openai}</Text>
+                        <Text style={{color: '#FF9a9a'}}>{errorText}</Text>
                     </View>
                 </View>
             </SafeAreaView>

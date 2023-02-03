@@ -4,6 +4,11 @@ on: push
 env:
   NOTION_SECRET: ${{ secrets.NOTION_SECRET }}
   OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
+  SPOTIFY_CLIENTID: ${{ secrets.SPOTIFY_CLIENTID }}
+  SPOTIFY_CLIENTSECRET: ${{ secrets.SPOTIFY_CLIENTSECRET }}
+  VANJACLOUD_ROOT: ${{ secrets.VANJACLOUD_ROOT }}
+  NOTION_DB_TEST: ${{ secrets.NOTION_DB_TEST }}
+  NOTION_DB_PROD: ${{ secrets.NOTION_DB_PROD }}
 
 jobs:
   update:
