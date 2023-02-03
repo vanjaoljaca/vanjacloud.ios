@@ -5,14 +5,14 @@
  * @format
  */
 const path = require('path');
-const extraNodeModules = {
-  'vanjacloudjs.shared': path.resolve(__dirname + '/../vanjacloudjs.shared'),
-  'vanjacloudjs.private': path.resolve(__dirname + '/../vanjacloudjs.private'),
-};
-const watchFolders = [
-  path.resolve(__dirname + '/../vanjacloudjs.shared'),
-  path.resolve(__dirname + '/../vanjacloudjs.private')
-];
+// const extraNodeModules = {
+//   'vanjacloudjs.shared': path.resolve(__dirname + '/../vanjacloudjs.shared'),
+//   'vanjacloudjs.private': path.resolve(__dirname + '/../vanjacloudjs.private'),
+// };
+// const watchFolders = [
+//   path.resolve(__dirname + '/../vanjacloudjs.shared'),
+//   path.resolve(__dirname + '/../vanjacloudjs.private')
+// ];
 module.exports = {
   transformer: {
     getTransformOptions: async () => ({
@@ -22,8 +22,8 @@ module.exports = {
             },
         }),
     }, 
-  resolver: {
-    extraNodeModules
-    },
-  watchFolders,
+  // resolver: {
+  //   extraNodeModules
+  //   },
+  // watchFolders,
 };

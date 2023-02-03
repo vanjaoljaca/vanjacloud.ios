@@ -166,7 +166,7 @@ export default function App() {
 
 
                     <View style={{ height: 400 }}>
-                        <Text>{process.env.NOTION_SECRET}</Text>
+                        <Text>{vanjacloud.Keys.openai}</Text>
                     </View>
                 </View>
             </SafeAreaView>
