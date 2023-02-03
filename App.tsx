@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import React, { useState } from 'react';
 
-import { Button, TextInput, Text } from 'react-native-paper'
+import { Button, TextInput, Text, ActivityIndicator } from 'react-native-paper'
 
 //https://www.npmjs.com/package/node-libs-react-native
 
@@ -47,14 +47,6 @@ import * as Device from 'expo-device';
 
 import MyModule from 'vanjacloudjs.shared';
 
-console.log('**************************************************')
-console.log(process.env.NOTION_SECRET)
-console.log(process.env.NOTION_SECRET)
-console.log(process.env)
-console.log('MyModule', MyModule)
-console.log(MyModule)
-console.log('**************************************************')
-
 // Initializing a client
 const notion = new Client({
     auth: vanjacloud.Keys.notion
@@ -98,7 +90,7 @@ export default function App() {
     const [text, setText] = useState('unset');
     const [inputText, setInputText] = useState('');
     const [saving, setSaving] = useState(false);
-    const [errorText, setErrorText] = useState('testing');
+    const [errorText, setErrorText] = useState(null);
 
     async function doIt() {
         let r = await test();
@@ -107,43 +99,44 @@ export default function App() {
     }
 
     async function saveIt(text: string) {
-        try {
-            console.log('saving', text)
 
-            // todo: what if this fails??
-            const response = await notion.pages.create({
-                icon: {
-                    type: "emoji",
-                    emoji: "🐿️"
-                },
-                parent: {
-                    type: "database_id",
-                    database_id: dbid
-                },
-                properties: {
-                    title: [
-                        {
-                            text: {
-                                content: text
-                            }
+        console.log('saving', text)
+
+        const response = await notion.pages.create({
+            icon: {
+                type: "emoji",
+                emoji: "🐿️"
+            },
+            parent: {
+                type: "database_id",
+                database_id: dbid
+            },
+            properties: {
+                title: [
+                    {
+                        text: {
+                            content: text
                         }
-                    ]
-                }
-            });
+                    }
+                ]
+            }
+        });
 
-            return text;
-        } catch (error) {
-            console.error(error)
-            setErrorText(JSON.stringify(error));
-        }
+        return text;
+
     }
 
     async function onPressSave() {
-        setSaving(true)
-        let r = await saveIt(inputText);
-        console.log('saved it', r)
+        try {
+            setSaving(true)
+            let r = await saveIt(inputText);
+            console.log('saved it', r)
+            setInputText('');
+        } catch (error) {
+            console.error(error)
+            setErrorText('error: ' + JSON.stringify(error));
+        }
         setSaving(false)
-        setInputText('');
     }
 
     // @ts-ignore
@@ -167,7 +160,12 @@ export default function App() {
                         <Button
                             onPress={onPressSave}
                             mode="contained"
-                        ><Text>save</Text></Button>
+                        >
+                            <Text>save</Text>
+                            {/* a loading spinner: */}
+                            {saving && <ActivityIndicator size="small" color="#AAAAAA" />}
+
+                        </Button>
 
 
 
