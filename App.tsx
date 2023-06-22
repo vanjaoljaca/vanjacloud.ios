@@ -4,40 +4,7 @@ import React, { useState } from 'react';
 
 import { Button, TextInput, Text, ActivityIndicator } from 'react-native-paper'
 
-//https://www.npmjs.com/package/node-libs-react-native
-
-// https://github.com/nicholascelestin/replicate-js
-// https://replicate.com/openai/whisper/versions/30414ee7c4fffc37e260fcab7842b5be470b9b840f2b608f5baa9bbef9a259ed/api#run
-
-// https://developers.notion.com/reference/intro
-
-// try {
-//     let t = require('./eas.json')
-//     console.log('EAS FOUND!!!', t)
-// } catch (e) {
-//     console.log('eas.json not found')
-// }
-
-
-
 import vanjacloud from 'vanjacloudjs.shared';
-// console.log(vanjacloud.myThing)
-// import * as z from 'vanjacloudjs.private/keys';
-// console.log('prviate', z)
-
-// import * as eas from './eas.json'
-
-// try {
-
-//     console.log('eas import', eas);
-// } catch (e) {
-//     console.log('eas.json not found')
-// }
-
-// let k = require('../keys.json')
-// console.log('require is fine...', k);
-
-
 
 import { Client } from "@notionhq/client"
 
@@ -47,7 +14,6 @@ import * as Device from 'expo-device';
 
 import MyModule from 'vanjacloudjs.shared';
 
-// Initializing a client
 const notion = new Client({
     auth: vanjacloud.Keys.notion
 })
@@ -57,7 +23,6 @@ const testdbid = '4ef4fb0714c9441d94b06c826e74d5d3'
 const dbid = Device.isDevice ? proddbid : testdbid;
 
 async function test() {
-
     let res = await notion.databases.query({
         database_id: dbid,
     })
@@ -99,9 +64,7 @@ export default function App() {
     }
 
     async function saveIt(text: string) {
-
         console.log('saving', text)
-
         const response = await notion.pages.create({
             icon: {
                 type: "emoji",
@@ -121,9 +84,7 @@ export default function App() {
                 ]
             }
         });
-
         return text;
-
     }
 
     async function onPressSave() {
@@ -139,43 +100,34 @@ export default function App() {
         setSaving(false)
     }
 
-    // @ts-ignore
     return (
         <PaperProvider>
             <SafeAreaView style={{ flex: 1 }}>
                 <View style={{ flex: 1, margin: '10% 30%' }}>
                     <View style={{ flex: 1, backgroundColor: '#fff', justifyContent: 'center' }}>
-
-                        <Text>Think here:</Text>
-                        <TextInput
-                            mode='outlined'
-                            multiline={true}
-                            onChangeText={text => setInputText(text)}
-                            value={inputText}
-                            label="Note"
-                            height={200}
-                        />
+                        <View style={{ marginTop: 100 }}>
+                            <Text>Think here:</Text>
+                            <TextInput
+                                mode='outlined'
+                                multiline={true}
+                                onChangeText={text => setInputText(text)}
+                                value={inputText}
+                                label="Note"
+                                height={200}
+                            />
+                        </View>
                         <Gap />
-                        {/* <Button onPress={doIt}><Text>do it</Text></Button> */}
                         <Button
                             onPress={onPressSave}
                             mode="contained"
                         >
                             <Text>save</Text>
-                            {/* a loading spinner: */}
                             {saving && <ActivityIndicator size="small" color="#AAAAAA" />}
-
                         </Button>
-
-
-
-
                         <StatusBar style="auto" />
-                    </View >
-
-
+                    </View>
                     <View style={{ height: 400 }}>
-                        <Text style={{color: '#FF9a9a'}}>{errorText}</Text>
+                        <Text style={{ color: '#FF9a9a' }}>{errorText}</Text>
                     </View>
                 </View>
             </SafeAreaView>
