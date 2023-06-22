@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5ae49b2-2fc9-4df0-babd-c26370ecf072" name="Changes" comment="Basic spinner &amp; minor minor minor cleanup view">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="f5ae49b2-2fc9-4df0-babd-c26370ecf072" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.aider.chat.history.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.aider.input.history" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,12 +27,16 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2LDS0qTHWgydP4jG0CHoNk9FLn5" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -80,7 +86,7 @@
       <workItem from="1675411494627" duration="427000" />
       <workItem from="1675413306229" duration="4421000" />
       <workItem from="1675505269058" duration="598000" />
-      <workItem from="1687421269763" duration="709000" />
+      <workItem from="1687421269763" duration="905000" />
     </task>
     <task id="LOCAL-00001" summary="hack and slash, &#10;&#10;still dont understand how to make a good secrets strategy. seems I need 4 builds:&#10;&#10;1. github action eas update&#10;2. local eas update&#10;3. local simulator&#10;4. eas build&#10;&#10;it would have been nice to have 1 secrets management strategy for all, but this is turning out to be a nightmare so im just going to manually do secrets for each">
       <created>1675407451757</created>
@@ -124,7 +130,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675411747224</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="idk">
+      <created>1687422124366</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1687422124366</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -156,13 +169,15 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="hack and slash, &#10;&#10;still dont understand how to make a good secrets strategy. seems I need 4 builds:&#10;&#10;1. github action eas update&#10;2. local eas update&#10;3. local simulator&#10;4. eas build&#10;&#10;it would have been nice to have 1 secrets management strategy for all, but this is turning out to be a nightmare so im just going to manually do secrets for each" />
     <MESSAGE value="whoops dev config&#10;&#10;Ok I think it was failing because of dev metro config. think this should work now..." />
     <MESSAGE value="Trying to get these secrets in to the app..." />
     <MESSAGE value="erm lets blame chat gpt for this one" />
     <MESSAGE value="More keys + basic error display" />
     <MESSAGE value="Basic spinner &amp; minor minor minor cleanup view" />
-    <option name="LAST_COMMIT_MESSAGE" value="Basic spinner &amp; minor minor minor cleanup view" />
+    <MESSAGE value="idk" />
+    <option name="LAST_COMMIT_MESSAGE" value="idk" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
