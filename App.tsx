@@ -56,6 +56,8 @@ export default function App() {
     const [inputText, setInputText] = useState('');
     const [saving, setSaving] = useState(false);
     const [errorText, setErrorText] = useState(null);
+    const [translatedText, setTranslatedText] = useState(null);
+    const [showTranslation, setShowTranslation] = useState(false);
 
     async function doIt() {
         let r = await test();
@@ -100,6 +102,17 @@ export default function App() {
         setSaving(false)
     }
 
+    async function translateText() {
+        // Call translation service here and set the translated text
+        // to the translatedText state variable
+        setTranslatedText('Translated text');
+        setShowTranslation(true);
+    }
+
+    function onPressBack() {
+        setShowTranslation(false);
+    }
+
     return (
         <PaperProvider>
             <SafeAreaView style={{ flex: 1 }}>
@@ -124,6 +137,28 @@ export default function App() {
                             <Text>save</Text>
                             {saving && <ActivityIndicator size="small" color="#AAAAAA" />}
                         </Button>
+                        <Gap />
+                        {!showTranslation && (
+                            <Button
+                                onPress={translateText}
+                                mode="contained"
+                            >
+                                <Text>translate</Text>
+                            </Button>
+                        )}
+                        {showTranslation && (
+                            <View>
+                                <Text>Translated Text:</Text>
+                                <Text>{translatedText}</Text>
+                                <Gap />
+                                <Button
+                                    onPress={onPressBack}
+                                    mode="contained"
+                                >
+                                    <Text>back</Text>
+                                </Button>
+                            </View>
+                        )}
                         <StatusBar style="auto" />
                     </View>
                     <View style={{ height: 400 }}>
