@@ -13,17 +13,24 @@ const path = require('path');
 //   path.resolve(__dirname + '/../vanjacloudjs.shared'),
 //   path.resolve(__dirname + '/../vanjacloudjs.private')
 // ];
-module.exports = {
-  transformer: {
-    getTransformOptions: async () => ({
-      transform: {
-        experimentalImportSupport: false,
-        inlineRequires: false,
-            },
-        }),
-    }, 
-  // resolver: {
-  //   extraNodeModules
-  //   },
-  // watchFolders,
-};
+
+const { getDefaultConfig } = require('expo/metro-config');
+
+const config = getDefaultConfig(__dirname);
+
+module.exports = config;
+//
+// module.exports = {
+//   transformer: {
+//     getTransformOptions: async () => ({
+//       transform: {
+//         experimentalImportSupport: false,
+//         inlineRequires: false,
+//             },
+//         }),
+//     },
+//   // resolver: {
+//   //   extraNodeModules
+//   //   },
+//   // watchFolders,
+// };
