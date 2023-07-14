@@ -170,7 +170,7 @@ export default function App() {
         }
     }
 
-    function onPressBack() {
+    function handlePressBack() {
         setShowTranslation(false);
     }
 
