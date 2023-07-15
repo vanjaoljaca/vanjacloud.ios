@@ -5,8 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f5ae49b2-2fc9-4df0-babd-c26370ecf072" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/.idea/vanjacloud.shared.js.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/metro.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/metro.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/.idea/vanjacloudjs.shared.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/keys.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/keys.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/keys.js" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/keys.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/keys.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/keys.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/AzureTranslate.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/AzureTranslate.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/AzureTranslate.js" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/AzureTranslate.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/AzureTranslate.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/AzureTranslate.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/index.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/index.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/notion.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/notion.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/notion.js" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/notion.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/openai.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/openai.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/openai.js" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/openai.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/keys.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/keys.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,32 +52,32 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2LDS0qTHWgydP4jG0CHoNk9FLn5" />
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/voljaca/play/vanjacloudios",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "yarn",
-    "settings.editor.selected.configurable": "preferences.sourceCode.TypeScript",
-    "ts.external.directory.path": "/Users/vanjaoljaca/work/vanjacloudios/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/vanjaoljaca/work/vanjacloud/vanjacloud.ios&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.TypeScript&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/vanjaoljaca/work/vanjacloud/vanjacloud.ios/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -95,7 +121,9 @@
       <workItem from="1675413306229" duration="4421000" />
       <workItem from="1675505269058" duration="598000" />
       <workItem from="1687421269763" duration="1934000" />
-      <workItem from="1689378409700" duration="8301000" />
+      <workItem from="1689378409700" duration="8927000" />
+      <workItem from="1689410477069" duration="758000" />
+      <workItem from="1689411289319" duration="387000" />
     </task>
     <task id="LOCAL-00001" summary="hack and slash, &#10;&#10;still dont understand how to make a good secrets strategy. seems I need 4 builds:&#10;&#10;1. github action eas update&#10;2. local eas update&#10;3. local simulator&#10;4. eas build&#10;&#10;it would have been nice to have 1 secrets management strategy for all, but this is turning out to be a nightmare so im just going to manually do secrets for each">
       <created>1675407451757</created>
@@ -177,7 +205,15 @@
       <option name="project" value="LOCAL" />
       <updated>1689392130507</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Cleaning up UI etc">
+      <option name="closed" value="true" />
+      <created>1689393692291</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1689393692291</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -208,6 +244,7 @@
     <MESSAGE value="Missing eas.json config to fix things?&#10;&#10;I guess this is needed in new eas version" />
     <MESSAGE value="whatever" />
     <MESSAGE value="Got translation looking ok" />
-    <option name="LAST_COMMIT_MESSAGE" value="Got translation looking ok" />
+    <MESSAGE value="Cleaning up UI etc" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cleaning up UI etc" />
   </component>
 </project>

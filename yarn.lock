@@ -6768,9 +6768,9 @@ validate-npm-package-name@^3.0.0:
   dependencies:
     builtins "^1.0.3"
 
-vanjacloudjs.shared@vanjaoljaca/vanjacloudjs.shared#main:
+vanjacloud.shared.js@vanjaoljaca/vanjacloud.shared.js#main:
   version "1.0.0"
-  resolved "https://codeload.github.com/vanjaoljaca/vanjacloudjs.shared/tar.gz/f350c68f653680f92d8621698ac51fc8872ca507"
+  resolved "https://codeload.github.com/vanjaoljaca/vanjacloud.shared.js/tar.gz/f350c68f653680f92d8621698ac51fc8872ca507"
   dependencies:
     "@notionhq/client" "^2.2.3"
     "@types/uuid" "^9.0.0"
