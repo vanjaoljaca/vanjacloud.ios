@@ -16,3 +16,5 @@ web-build/
 .aider*
 local.settings.json
 .idea
+lib/
+.idea/

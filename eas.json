@@ -3,19 +3,25 @@
     "version": ">= 3.4.1"
   },
   "build": {
-    "dev": {
+    "dev-simulator": {
       "developmentClient": true,
       "distribution": "internal",
       "ios": {
         "simulator": true
       }
     },
-    "development": {
+    "dev-device": {
       "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "resourceClass": "m-medium"
+      }
+    },
+    "main": {
       "channel": "main",
       "distribution": "internal",
       "ios": {
-        "resourceClass": "m1-medium"
+        "resourceClass": "m-medium"
       }
     },
     "preview": {

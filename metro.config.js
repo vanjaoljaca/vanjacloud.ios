@@ -4,33 +4,19 @@
  *
  * @format
  */
-const path = require('path');
-// const extraNodeModules = {
-//   'vanjacloudjs.shared': path.resolve(__dirname + '/../vanjacloudjs.shared'),
-//   'vanjacloudjs.private': path.resolve(__dirname + '/../vanjacloudjs.private'),
-// };
-// const watchFolders = [
-//   path.resolve(__dirname + '/../vanjacloudjs.shared'),
-//   path.resolve(__dirname + '/../vanjacloudjs.private')
-// ];
 
-const { getDefaultConfig } = require('expo/metro-config');
+const {getDefaultConfig} = require('expo/metro-config');
 
 const config = getDefaultConfig(__dirname);
 
+config.transformer.getTransformOptions = async () => ({
+    transform: {
+        experimentalImportSupport: false,
+        inlineRequires: true
+    }
+});
+config.resolver.extraNodeModules = {
+    "vanjacloudjs.shared": "lib"
+};
+
 module.exports = config;
-//
-// module.exports = {
-//   transformer: {
-//     getTransformOptions: async () => ({
-//       transform: {
-//         experimentalImportSupport: false,
-//         inlineRequires: false,
-//             },
-//         }),
-//     },
-//   // resolver: {
-//   //   extraNodeModules
-//   //   },
-//   // watchFolders,
-// };

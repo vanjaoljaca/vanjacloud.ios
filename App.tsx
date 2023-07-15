@@ -1,14 +1,16 @@
-import {StatusBar} from 'expo-status-bar';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
-import React, {useState} from 'react';
-import {AzureTranslate} from "vanjacloudjs.shared/dist/src/AzureTranslate";
-import {v4 as uuidv4} from 'uuid';
-import {Button, TextInput, Text, ActivityIndicator, ProgressBar} from 'react-native-paper'
+import { StatusBar } from 'expo-status-bar';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { AzureTranslate } from "vanjacloudjs.shared/dist/src/AzureTranslate";
+import { v4 as uuidv4 } from 'uuid';
+import { Button, TextInput, Text, ActivityIndicator, ProgressBar } from 'react-native-paper'
 import vanjacloud from 'vanjacloudjs.shared';
-import {Client} from "@notionhq/client"
-import {Provider as PaperProvider} from 'react-native-paper';
+import { Client } from "@notionhq/client"
+import { Provider as PaperProvider } from 'react-native-paper';
 import * as Device from 'expo-device';
 import MyModule from 'vanjacloudjs.shared';
+import { Clipboard } from "react-native"; // todo: move this
+import { Menu, MenuItem } from 'react-native-paper';
 
 const notion = new Client({
     auth: vanjacloud.Keys.notion
@@ -48,6 +50,9 @@ function Gap() {
 
 function MainView({inputText, setInputText, onPressSave, saving, translateText, errorText, onClearErrorText}) {
 
+    const [menuVisible, setMenuVisible] = useState(false);
+    let refInputText = useRef(null);
+
     function handleClearErrorText() {
         onClearErrorText();
     }
@@ -57,15 +62,40 @@ function MainView({inputText, setInputText, onPressSave, saving, translateText, 
             {/* Top section for text input */}
             <View style={{flex: 1, backgroundColor: '#fff', justifyContent: 'center'}}>
                 <View style={{marginTop: 0}}>
-                    <Text>Think here:</Text>
                     <TextInput
+                        ref={r => refInputText = r}
                         mode='outlined'
                         multiline={true}
                         onChangeText={text => setInputText(text)}
                         value={inputText}
                         label="Note"
                         height={200}
+                        onLongPress={() => {
+                            setMenuVisible(true);
+                        }}
                     />
+                    <Menu
+                        // anchor={refInputText.current}
+                        anchor={<Button onPress={() => setMenuVisible(true)}>Show menu</Button>}
+                        visible={menuVisible}
+                        onDismiss={() => setMenuVisible(false)}
+                    >
+                        <Menu.Item
+                            onPress={() => {
+                                Clipboard.setString(inputText)
+                                setMenuVisible(false);
+                            }}
+                            title='Copy'
+                        />
+
+                        <Menu.Item
+                            onPress={() => {
+                                setInputText('');
+                                setMenuVisible(false);
+                            }}
+                            title='Clear'
+                        />
+                    </Menu>
                 </View>
             </View>
 
@@ -100,14 +130,94 @@ function MainView({inputText, setInputText, onPressSave, saving, translateText, 
     );
 }
 
-function TranslatedView({translatedText, onPressBack}) {
-    return (<>
-    {translatedText && translatedText.map(t =>
-            <Text key={t.from}>{t.text} 1234</Text>)}
-            <Button onPress={onPressBack}>Back</Button>
-            </>
-    )
+import { Dimensions } from 'react-native';
+import { DataTable } from 'react-native-paper';
+import KeyboardDismisser from "./src/KeyboardDismisser";
+
+const windowWidth = Dimensions.get('window').width;
+const cellWidth = windowWidth * 0.8 / 4;
+
+function TranslatedView({translatedText, onPressBack, onPressSave}) {
+    const [expandedText, setExpandedText] = useState(null);
+    const [selectedLanguage, setSelectedLanguage] = useState(null);
+
+    const screenHeight = Dimensions.get('window').height;
+    const maxCellHeight = (screenHeight * 0.75) / translatedText.length;
+
+    const styles = StyleSheet.create({
+        expandedView: {
+            marginTop: 10,
+            height: 200,
+            backgroundColor: '#fff'
+        },
+        expandedText: {
+            padding: 10,
+        },
+        buttonRow: {
+            flexDirection: 'row',
+            justifyContent: 'space-between'
+        },
+        cell: {
+            flex: 1,
+            maxHeight: maxCellHeight,
+        },
+    });
+
+    function handleSelectTargetTranslation(to) {
+        setSelectedLanguage(to);
+    }
+
+    function handlePressSave() {
+        onPressSave(translatedText, selectedLanguage);
+    }
+
+    function handleSingleTap(text) {
+        setExpandedText(text);
+    }
+
+    function handleClose() {
+        setExpandedText(null);
+    }
+
+    return (
+        <>
+            <DataTable>
+                <DataTable.Header>
+                    <DataTable.Title>Language</DataTable.Title>
+                    <DataTable.Title>Translation</DataTable.Title>
+                </DataTable.Header>
+
+                {translatedText.map(t => (
+                    <DataTable.Row key={t.to}>
+                        <DataTable.Cell
+                            style={[styles.cell, {backgroundColor: selectedLanguage === t.to ? '#ffe' : '#fff'}]}
+                            onPress={() => handleSelectTargetTranslation(t.to)}>
+                            {t.to}
+                        </DataTable.Cell>
+                        <DataTable.Cell
+                            style={styles.cell}
+                            onPress={() => setExpandedText(t.text)}
+                            onLongPress={() => Clipboard.setString(t.text)}>
+                            {t.text}
+                            {/*{expandedText === t.text ? t.text : t.text.substring(0, 40) + '...'}*/}
+                        </DataTable.Cell>
+                    </DataTable.Row>
+                ))}
+            </DataTable>
+            {expandedText && (
+                <View style={styles.expandedView}>
+                    <Text style={styles.expandedText}>{expandedText}</Text>
+                    <Button onPress={handleClose}>Close</Button>
+                </View>
+            )}
+            <View style={styles.buttonRow}>
+                <Button onPress={onPressBack}>Back</Button>
+                <Button onPress={handlePressSave}>Save Translation</Button>
+            </View>
+        </>
+    );
 }
+
 
 export default function App() {
     const [text, setText] = useState('unset');
@@ -117,12 +227,13 @@ export default function App() {
     const [translatedText, setTranslatedText] = useState(null);
     const [showTranslation, setShowTranslation] = useState(false);
 
-    async function saveIt(text: string) {
+    async function saveIt(text: string, categoryEmoji?) {
+        categoryEmoji = categoryEmoji || '🐿️';
         console.log('saving', text)
         const response = await notion.pages.create({
             icon: {
                 type: "emoji",
-                emoji: "🐿️"
+                emoji: categoryEmoji
             },
             parent: {
                 type: "database_id",
@@ -174,23 +285,35 @@ export default function App() {
         setShowTranslation(false);
     }
 
+    async function handleSaveTranslation(translations, preferredLanguage) {
+        setSaving(true);
+        await saveIt(JSON.stringify({translations, preferredLanguage}), '👻');
+        setShowTranslation(false);
+        setSaving(false);
+    }
+
     return (
         <PaperProvider>
             <SafeAreaView style={{flex: 1}}>
-                {showTranslation ?
-                    <TranslatedView
-                        translatedText={translatedText}
-                        onPressBack={() => setShowTranslation(false)}/> :
-                    <MainView
-                        inputText={inputText}
-                        setInputText={setInputText}
-                        onPressSave={onPressSave}
-                        saving={saving}
-                        translateText={translateText}
-                        errorText={errorText}
-                        onClearErrorText={() => setErrorText(null)}
-                    />
-                }
+                <KeyboardDismisser>
+                    {saving && <ActivityIndicator size="small" color="#AAAAAA"/>}
+                    {showTranslation ?
+                        <TranslatedView
+                            translatedText={translatedText}
+                            onPressBack={() => setShowTranslation(false)}
+                            onPressSave={handleSaveTranslation}
+                        /> :
+                        <MainView
+                            inputText={inputText}
+                            setInputText={setInputText}
+                            onPressSave={onPressSave}
+                            saving={saving}
+                            translateText={translateText}
+                            errorText={errorText}
+                            onClearErrorText={() => setErrorText(null)}
+                        />
+                    }
+                </KeyboardDismisser>
             </SafeAreaView>
         </PaperProvider>
     );
