@@ -51,32 +51,46 @@ function Gap() {
 function MainView({inputText, setInputText, onPressSave, saving, translateText, errorText, onClearErrorText}) {
 
     const [menuVisible, setMenuVisible] = useState(false);
-    let refInputText = useRef(null);
 
     function handleClearErrorText() {
         onClearErrorText();
     }
 
+    const [menuAnchor, setMenuAnchor] = useState({x: 0, y: 0})
+
     return (
         <View style={{flex: 1, margin: '7% 0%'}}>
             {/* Top section for text input */}
+            {!saving && <Gap />}
             <View style={{flex: 1, backgroundColor: '#fff', justifyContent: 'center'}}>
                 <View style={{marginTop: 0}}>
                     <TextInput
-                        ref={r => refInputText = r}
                         mode='outlined'
                         multiline={true}
                         onChangeText={text => setInputText(text)}
                         value={inputText}
-                        label="Note"
+                        label="Think here"
                         height={200}
-                        onLongPress={() => {
+
+                    />
+                    <Gap />
+                    <Button
+                        // ref={refInputText}
+                        onPress={(e) => {
+                            console.log('long press');
+                            const {nativeEvent} = e;
+                            const anchor = {
+                                x: nativeEvent.pageX,
+                                y: nativeEvent.pageY,
+                            };
+
+                            setMenuAnchor(anchor);
                             setMenuVisible(true);
                         }}
-                    />
+
+                    >🫥</Button>
                     <Menu
-                        // anchor={refInputText.current}
-                        anchor={<Button onPress={() => setMenuVisible(true)}>Show menu</Button>}
+                        anchor={menuAnchor}
                         visible={menuVisible}
                         onDismiss={() => setMenuVisible(false)}
                     >
@@ -99,17 +113,21 @@ function MainView({inputText, setInputText, onPressSave, saving, translateText, 
                 </View>
             </View>
 
-            {/* Middle section for buttons */}
-            <View>
+            {/* Middle section for buttons */
+            }
+            <View style={{flexDirection: 'row'}}>
+                <Gap/>
                 <Button
+                    style={{flex: 1}}
                     onPress={onPressSave}
                     mode="contained"
                 >
                     <Text>save</Text>
-                    {saving && <ActivityIndicator size="small" color="#AAAAAA"/>}
+
                 </Button>
                 <Gap/>
                 <Button
+                    style={{flex: 1}}
                     onPress={translateText}
                     mode="contained"
                 >
@@ -117,17 +135,22 @@ function MainView({inputText, setInputText, onPressSave, saving, translateText, 
                 </Button>
             </View>
 
-            {/* Bottom section for progress bar and error text */}
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                {/* Add progress bar component here */}
-                {/*<ProgressBar progress={0.5} color={'#3f51b5'} style={{height: 200}}/>*/}
+            {/* Bottom section for progress bar and error text */
+            }
+            <KeyboardDismisser>
 
-                <View style={{height: 200, width: '100%'}}>
-                    <Text style={{color: '#FF9a9a'}} onPress={handleClearErrorText}>{errorText}</Text>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                    {/* Add progress bar component here */}
+                    {/*<ProgressBar progress={0.5} color={'#3f51b5'} style={{height: 200}}/>*/}
+
+                    <View style={{height: 200, width: '100%'}}>
+                        <Text style={{color: '#FF9a9a'}} onPress={handleClearErrorText}>{errorText}</Text>
+                    </View>
                 </View>
-            </View>
+            </KeyboardDismisser>
         </View>
-    );
+    )
+        ;
 }
 
 import { Dimensions } from 'react-native';
@@ -270,6 +293,7 @@ export default function App() {
         // to the translatedText
         // to the translatedText state variable
         try {
+            setSaving(true)
             let r = await translate.translate(inputText, {
                 traceId: uuidv4()
             });
@@ -279,6 +303,7 @@ export default function App() {
             console.error(e)
             setErrorText('error: ' + JSON.stringify(e));
         }
+        setSaving(false)
     }
 
     function handlePressBack() {
@@ -295,25 +320,24 @@ export default function App() {
     return (
         <PaperProvider>
             <SafeAreaView style={{flex: 1}}>
-                <KeyboardDismisser>
-                    {saving && <ActivityIndicator size="small" color="#AAAAAA"/>}
-                    {showTranslation ?
-                        <TranslatedView
-                            translatedText={translatedText}
-                            onPressBack={() => setShowTranslation(false)}
-                            onPressSave={handleSaveTranslation}
-                        /> :
-                        <MainView
-                            inputText={inputText}
-                            setInputText={setInputText}
-                            onPressSave={onPressSave}
-                            saving={saving}
-                            translateText={translateText}
-                            errorText={errorText}
-                            onClearErrorText={() => setErrorText(null)}
-                        />
-                    }
-                </KeyboardDismisser>
+
+                {saving && <ActivityIndicator size="small" color="#AAAAAA"/>}
+                {showTranslation ?
+                    <TranslatedView
+                        translatedText={translatedText}
+                        onPressBack={() => setShowTranslation(false)}
+                        onPressSave={handleSaveTranslation}
+                    /> :
+                    <MainView
+                        inputText={inputText}
+                        setInputText={setInputText}
+                        onPressSave={onPressSave}
+                        saving={saving}
+                        translateText={translateText}
+                        errorText={errorText}
+                        onClearErrorText={() => setErrorText(null)}
+                    />
+                }
             </SafeAreaView>
         </PaperProvider>
     );
