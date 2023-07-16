@@ -56,3 +56,11 @@ cd ./lib/vanjacloudjs.shared && yarn link && yarn watch
 cd ../..
 yarn link vanjacloudjs.shared
 ```
+
+### Damn keys not updating
+
+update: this is unresolved. not sure how to get this to actually load
+Metro build will pull keys from .env and put them into the dist JS. If you change .env, you will need to clear cache:
+```shell
+expo start --clear
+```

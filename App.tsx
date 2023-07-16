@@ -1,54 +1,45 @@
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { SafeAreaView, StyleSheet, View, ScrollView } from 'react-native';
 import React, { useRef, useState } from 'react';
-import { AzureTranslate } from "vanjacloudjs.shared/dist/src/AzureTranslate";
 import { v4 as uuidv4 } from 'uuid';
-import { Button, TextInput, Text, ActivityIndicator, ProgressBar } from 'react-native-paper'
-import vanjacloud from 'vanjacloudjs.shared';
+import { Button, TextInput, Text, ActivityIndicator, ProgressBar, Modal } from 'react-native-paper'
 import { Client } from "@notionhq/client"
 import { Provider as PaperProvider } from 'react-native-paper';
 import * as Device from 'expo-device';
-import MyModule from 'vanjacloudjs.shared';
 import { Clipboard } from "react-native"; // todo: move this
-import { Menu, MenuItem } from 'react-native-paper';
+import { Menu } from 'react-native-paper';
+import { ChatGPT, AzureTranslate } from "vanjacloud.shared.js";
+import vanjacloud from "vanjacloud.shared.js";
+import axios from 'axios';
+import { Dimensions } from 'react-native';
+import { DataTable } from 'react-native-paper';
+import KeyboardDismisser from "./src/KeyboardDismisser";
+
+process.env['DEBUG'] = 'true'
+
+const Keys = vanjacloud.Keys;
+Keys.openai = process.env.OPENAI_API_KEY; // todo.. idk why this isnt being loaded, some build crap
 
 const notion = new Client({
-    auth: vanjacloud.Keys.notion
+    auth: Keys.notion
 })
 const proddbid = '1ccbf2c452d6453d94bc462a8c83c200'
 const testdbid = '4ef4fb0714c9441d94b06c826e74d5d3'
 
 const dbid = Device.isDevice ? proddbid : testdbid;
 
-const translate = new AzureTranslate(vanjacloud.Keys.azure.translate);
-
-async function test() {
-    let res = await notion.databases.query({
-        database_id: dbid,
-    })
-    let dbpage = await notion.pages.retrieve({
-        page_id: res.results[0].id
-    });
-    for (const result of res.results) {
-        console.log(result.id);
-        let props = (result as any).properties;
-        console.log(Object.keys(props));
-        try {
-            console.log(props.Note.title[0].plain_text)
-        } catch (e) {
-            console.log('*************** BALSAMIC')
-            console.log(props.Note)
-        }
-    }
-    console.log('--------')
-    return (res.results[0] as any).properties.Note.title[0].plain_text;
-}
+const translate = new AzureTranslate(Keys.azure.translate);
 
 function Gap() {
-    return <View style={{height: 40}}/>
+    return <View style={{ height: 40 }}/>
 }
 
-function MainView({inputText, setInputText, onPressSave, saving, translateText, errorText, onClearErrorText}) {
+const isProd = true;
+
+const vanjaCloudUrl = isProd
+  ? "https://cloud.vanja.oljaca.me"
+  : "https://dev.cloud.vanja.oljaca.me"; // http://localhost:3000
+
+function MainView({ inputText, setInputText, onPressSave, saving, translateText, errorText, onClearErrorText }) {
 
     const [menuVisible, setMenuVisible] = useState(false);
 
@@ -56,69 +47,33 @@ function MainView({inputText, setInputText, onPressSave, saving, translateText, 
         onClearErrorText();
     }
 
-    const [menuAnchor, setMenuAnchor] = useState({x: 0, y: 0})
+    const [menuAnchor, setMenuAnchor] = useState({ x: 0, y: 0 })
 
     return (
-        <View style={{flex: 1, margin: '7% 0%'}}>
+        <View style={{ flex: 1, margin: '7% 0% 7% 0%' }}>
             {/* Top section for text input */}
-            {!saving && <Gap />}
-            <View style={{flex: 1, backgroundColor: '#fff', justifyContent: 'center'}}>
-                <View style={{marginTop: 0}}>
+            {!saving && <Gap/>}
+            <View style={{ flex: 1, backgroundColor: '#fff', justifyContent: 'center' }}>
+                <View style={{ marginTop: 0 }}>
                     <TextInput
                         mode='outlined'
                         multiline={true}
                         onChangeText={text => setInputText(text)}
                         value={inputText}
                         label="Think here"
-                        height={200}
-
+                        style={{ height: 200 }}
                     />
-                    <Gap />
-                    <Button
-                        // ref={refInputText}
-                        onPress={(e) => {
-                            console.log('long press');
-                            const {nativeEvent} = e;
-                            const anchor = {
-                                x: nativeEvent.pageX,
-                                y: nativeEvent.pageY,
-                            };
+                    <Gap/>
 
-                            setMenuAnchor(anchor);
-                            setMenuVisible(true);
-                        }}
-
-                    >🫥</Button>
-                    <Menu
-                        anchor={menuAnchor}
-                        visible={menuVisible}
-                        onDismiss={() => setMenuVisible(false)}
-                    >
-                        <Menu.Item
-                            onPress={() => {
-                                Clipboard.setString(inputText)
-                                setMenuVisible(false);
-                            }}
-                            title='Copy'
-                        />
-
-                        <Menu.Item
-                            onPress={() => {
-                                setInputText('');
-                                setMenuVisible(false);
-                            }}
-                            title='Clear'
-                        />
-                    </Menu>
                 </View>
             </View>
 
             {/* Middle section for buttons */
             }
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
                 <Gap/>
                 <Button
-                    style={{flex: 1}}
+                    style={{ flex: 1 }}
                     onPress={onPressSave}
                     mode="contained"
                 >
@@ -127,24 +82,60 @@ function MainView({inputText, setInputText, onPressSave, saving, translateText, 
                 </Button>
                 <Gap/>
                 <Button
-                    style={{flex: 1}}
+                    style={{ flex: 1 }}
                     onPress={translateText}
                     mode="contained"
                 >
                     <Text>translate</Text>
                 </Button>
+                <Button
+                    style={{ flex: 0.3 }}
+                    onPress={(e) => {
+                        console.log('long press');
+                        const { nativeEvent } = e;
+                        const anchor = {
+                            x: nativeEvent.pageX,
+                            y: nativeEvent.pageY,
+                        };
+
+                        setMenuAnchor(anchor);
+                        setMenuVisible(true);
+                    }}
+
+                >🫥</Button>
+                <Menu
+                    anchor={menuAnchor}
+                    visible={menuVisible}
+                    onDismiss={() => setMenuVisible(false)}
+                >
+                    <Menu.Item
+                        onPress={() => {
+                            Clipboard.setString(inputText)
+                            setMenuVisible(false);
+                        }}
+                        title='Copy'
+                    />
+
+                    <Menu.Item
+                        onPress={() => {
+                            setInputText('');
+                            setMenuVisible(false);
+                        }}
+                        title='Clear'
+                    />
+                </Menu>
             </View>
 
             {/* Bottom section for progress bar and error text */
             }
             <KeyboardDismisser>
 
-                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     {/* Add progress bar component here */}
                     {/*<ProgressBar progress={0.5} color={'#3f51b5'} style={{height: 200}}/>*/}
 
-                    <View style={{height: 200, width: '100%'}}>
-                        <Text style={{color: '#FF9a9a'}} onPress={handleClearErrorText}>{errorText}</Text>
+                    <View style={{ height: 200, width: '100%' }}>
+                        <Text style={{ color: '#FF9a9a' }} onPress={handleClearErrorText}>{errorText}</Text>
                     </View>
                 </View>
             </KeyboardDismisser>
@@ -153,16 +144,14 @@ function MainView({inputText, setInputText, onPressSave, saving, translateText, 
         ;
 }
 
-import { Dimensions } from 'react-native';
-import { DataTable } from 'react-native-paper';
-import KeyboardDismisser from "./src/KeyboardDismisser";
 
 const windowWidth = Dimensions.get('window').width;
 const cellWidth = windowWidth * 0.8 / 4;
 
-function TranslatedView({translatedText, onPressBack, onPressSave}) {
+function TranslatedView({ translatedText, onPressBack, onPressSave }) {
     const [expandedText, setExpandedText] = useState(null);
     const [selectedLanguage, setSelectedLanguage] = useState(null);
+    const [explanation, setExplanation] = useState(null);
 
     const screenHeight = Dimensions.get('window').height;
     const maxCellHeight = (screenHeight * 0.75) / translatedText.length;
@@ -170,7 +159,7 @@ function TranslatedView({translatedText, onPressBack, onPressSave}) {
     const styles = StyleSheet.create({
         expandedView: {
             marginTop: 10,
-            height: 200,
+
             backgroundColor: '#fff'
         },
         expandedText: {
@@ -202,6 +191,61 @@ function TranslatedView({translatedText, onPressBack, onPressSave}) {
         setExpandedText(null);
     }
 
+    async function handleExplain() {
+        try {
+            setExplanation('Thinking...')
+            const response = await axios.post(`${vanjaCloudUrl}/api/main/language`, {
+                request: 'explain',
+                target: selectedLanguage,
+                text: expandedText
+            });
+
+            let m = response.data.response;
+            m = (m as string).replace('\n', '\n\n')
+
+
+            setExplanation(m)
+            console.log(m)
+        } catch (e) {
+            console.log(JSON.stringify(e))
+            setExplanation(JSON.stringify(e))
+        }
+    }
+
+    const styles2 = StyleSheet.create({
+        modalOverlay: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(255,0,0,0.5)',
+            justifyContent: 'flex-start',
+            alignItems: 'stretch'
+        },
+        modalContainer: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: '#fff',
+            padding: 20,
+            borderRadius: 4,
+            alignItems: 'stretch',
+            justifyContent: 'flex-start',
+
+            // width: '80%',
+            // height: '60%'
+            flex: 1
+        },
+        modalText: {
+            fontSize: 30,
+            color: '#fff', // white color for the text
+            textAlign: 'center', // center the text
+        }
+    })
+
     return (
         <>
             <DataTable>
@@ -213,7 +257,7 @@ function TranslatedView({translatedText, onPressBack, onPressSave}) {
                 {translatedText.map(t => (
                     <DataTable.Row key={t.to}>
                         <DataTable.Cell
-                            style={[styles.cell, {backgroundColor: selectedLanguage === t.to ? '#ffe' : '#fff'}]}
+                            style={[styles.cell, { backgroundColor: selectedLanguage === t.to ? '#ffe' : '#fff' }]}
                             onPress={() => handleSelectTargetTranslation(t.to)}>
                             {t.to}
                         </DataTable.Cell>
@@ -228,15 +272,60 @@ function TranslatedView({translatedText, onPressBack, onPressSave}) {
                 ))}
             </DataTable>
             {expandedText && (
+
                 <View style={styles.expandedView}>
                     <Text style={styles.expandedText}>{expandedText}</Text>
+
                     <Button onPress={handleClose}>Close</Button>
+                    {selectedLanguage && <Button onPress={handleExplain}>🤔</Button>}
+
                 </View>
+
             )}
             <View style={styles.buttonRow}>
                 <Button onPress={onPressBack}>Back</Button>
                 <Button onPress={handlePressSave}>Save Translation</Button>
             </View>
+
+
+            {explanation != null && (
+                <Modal visible={explanation != null}>
+                    <View style={{
+                        // flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginTop: 7
+                    }}>
+                        <View style={{
+                            margin: 20,
+                            backgroundColor: "white",
+                            borderRadius: 20,
+                            padding: 35,
+                            alignItems: "center",
+                            shadowColor: "#000",
+                            shadowOffset: {
+                                width: 0,
+                                height: 2
+                            },
+                            shadowOpacity: 0.25,
+                            shadowRadius: 4,
+                            elevation: 5,
+                            maxHeight: '80%',
+                            height: '100%',
+                            width: '95%'
+                        }}>
+                            <ScrollView>
+                                <Text>{explanation}</Text>
+
+                            </ScrollView>
+                            <Button onPress={() => setExplanation(null)}>End</Button>
+                        </View>
+                    </View>
+                </Modal>
+
+
+            )}
+
         </>
     );
 }
@@ -312,14 +401,14 @@ export default function App() {
 
     async function handleSaveTranslation(translations, preferredLanguage) {
         setSaving(true);
-        await saveIt(JSON.stringify({translations, preferredLanguage}), '👻');
+        await saveIt(JSON.stringify({ translations, preferredLanguage }), '👻');
         setShowTranslation(false);
         setSaving(false);
     }
 
     return (
         <PaperProvider>
-            <SafeAreaView style={{flex: 1}}>
+            <SafeAreaView style={{ flex: 1 }}>
 
                 {saving && <ActivityIndicator size="small" color="#AAAAAA"/>}
                 {showTranslation ?
@@ -343,17 +432,10 @@ export default function App() {
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});
 
 async function debug() {
 
+    return
 }
 
 debug()
