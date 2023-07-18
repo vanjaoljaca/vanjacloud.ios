@@ -11,7 +11,7 @@ export class VanjaCloudClient {
             : "https://dev.cloud.vanja.oljaca.me"; // http://localhost:3000
 
 
-        this.url = url || 'http://localhost:3000' //vanjaCloudUrl;
+        this.url = url || vanjaCloudUrl; // 'http://localhost:3000' //vanjaCloudUrl;
     }
 
     async explain(language, text) {

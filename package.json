@@ -7,7 +7,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "push-dev-phone": "eas update --channel main"
+    "push-dev-phone": "eas update --channel preview"
   },
   "dependencies": {
     "@eva-design/eva": "^2.1.1",
