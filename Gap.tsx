@@ -2,5 +2,5 @@ import { View } from "react-native";
 import React from "react";
 
 export function Gap() {
-    return <View style={{ height: 40 }}/>
+    return <View style={{ height: 40, margin: '5%' }} />
 }

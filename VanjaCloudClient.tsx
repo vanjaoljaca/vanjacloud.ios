@@ -14,6 +14,11 @@ export class VanjaCloudClient {
         this.url = url || vanjaCloudUrl; // 'http://localhost:3000' //vanjaCloudUrl;
     }
 
+    async main(api, body) {
+        const response = await axios.post(`${this.url}/api/main/${api}`, body);
+        return response.data;
+    }
+
     async explain(language, text) {
         const response = await axios.post(`${this.url}/api/main/language`, {
             request: 'explain',

@@ -4,11 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5ae49b2-2fc9-4df0-babd-c26370ecf072" name="Changes" comment="Added week retrospective button, will clean up later">
+    <list default="true" id="f5ae49b2-2fc9-4df0-babd-c26370ecf072" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/ThoughtDB.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/ThoughtDB.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/ThoughtDB.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/ThoughtDB.test.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/ThoughtDB.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/ThoughtDB.test.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/prompts/retrospective.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/launch.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/launch.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VanjaCloudClient.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/VanjaCloudClient.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/LanguageTeacher.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/LanguageTeacher.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/LanguageTeacher.js" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/LanguageTeacher.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/LanguageTeacher.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/LanguageTeacher.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/dist/src/index.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/src/LanguageTeacher.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/src/LanguageTeacher.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/src/notion.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/src/ThoughtDB.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vanjacloud.shared.js/src/notion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../vanjacloud.shared.js/src/ThoughtDB.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +119,9 @@
       <workItem from="1689410477069" duration="758000" />
       <workItem from="1689411289319" duration="2999000" />
       <workItem from="1689422491240" duration="23766000" />
-      <workItem from="1689590636415" duration="1225000" />
+      <workItem from="1689590636415" duration="3147000" />
+      <workItem from="1689672159169" duration="1374000" />
+      <workItem from="1689755305001" duration="109000" />
     </task>
     <task id="LOCAL-00001" summary="hack and slash, &#10;&#10;still dont understand how to make a good secrets strategy. seems I need 4 builds:&#10;&#10;1. github action eas update&#10;2. local eas update&#10;3. local simulator&#10;4. eas build&#10;&#10;it would have been nice to have 1 secrets management strategy for all, but this is turning out to be a nightmare so im just going to manually do secrets for each">
       <created>1675407451757</created>
@@ -215,7 +235,15 @@
       <option name="project" value="LOCAL" />
       <updated>1689587873746</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="😘">
+      <option name="closed" value="true" />
+      <created>1689669077027</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1689669077027</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -250,6 +278,7 @@
     <MESSAGE value="Got module sharing working finally" />
     <MESSAGE value="Add 'explain translation'&#10;&#10;It's not pretty, but it works so i'm g2g" />
     <MESSAGE value="Added week retrospective button, will clean up later" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added week retrospective button, will clean up later" />
+    <MESSAGE value="" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
 </project>

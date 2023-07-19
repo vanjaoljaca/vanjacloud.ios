@@ -29,11 +29,11 @@ export function MainView({ inputText, setInputText, onPressSave, saving, transla
                 flex: 1,
                 marginLeft: '7%',
                 marginRight: '7%',
-                marginTop: '7%',
+                marginTop: '15%',
                 marginBottom: '7%',
             }}>
                 {/* Top section for text input */}
-                {!saving && <Gap/>}
+                <Gap />
                 <View style={{ flex: 1, backgroundColor: '#fff', justifyContent: 'center' }}>
                     <View style={{ marginTop: 0 }}>
                         <TextInput
@@ -44,13 +44,13 @@ export function MainView({ inputText, setInputText, onPressSave, saving, transla
                             label="Think here"
                             style={{ height: 200 }}
                         />
-                        <Gap/>
+                        <Gap />
 
                     </View>
                 </View>
-
+                <Gap />
                 <View style={{ flexDirection: 'row' }}>
-                    <Gap/>
+
                     <Button
                         style={{ flex: 1 }}
                         onPress={onPressSave}
@@ -59,7 +59,7 @@ export function MainView({ inputText, setInputText, onPressSave, saving, transla
                         <Text>save</Text>
 
                     </Button>
-                    <Gap/>
+
                     <Button
                         style={{ flex: 1 }}
                         onPress={translateText}

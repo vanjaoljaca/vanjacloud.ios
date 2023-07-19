@@ -1,20 +1,3 @@
 {
-    "configurations": [
-        {
-            "name": "Debug Direct iOS - Experimental",
-            "request": "launch",
-            "type": "reactnativedirect",
-            "cwd": "${workspaceFolder}",
-            "platform": "ios",
-            "useHermesEngine": false,
-            "target": "device"
-        },
-        {
-            "name": "Debug iOS Hermes - Experimental",
-            "request": "launch",
-            "type": "reactnativedirect",
-            "cwd": "${workspaceFolder}",
-            "platform": "ios"
-        }
-    ]
+    "configurations": []
 }

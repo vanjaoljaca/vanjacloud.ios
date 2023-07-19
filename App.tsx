@@ -10,6 +10,7 @@ import { MainView } from "./MainView";
 
 import { Button } from 'react-native-paper';
 import { VanjaCloudClient } from "./VanjaCloudClient";
+import { Gap } from './Gap';
 
 process.env['DEBUG'] = 'true'
 
@@ -32,43 +33,42 @@ const windowWidth = Dimensions.get('window').width;
 const cellWidth = windowWidth * 0.8 / 4;
 
 
-function ShareableModalPopup({text, onClose}) {
+function ShareableModalPopup({ text, onClose }) {
     return (<Modal visible={text != null && text != undefined}>
-                <View style={{
-                    // flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginTop: 7
-                }}>
-                    <View style={{
-                        margin: 20,
-                        backgroundColor: "white",
-                        borderRadius: 20,
-                        padding: 35,
-                        alignItems: "center",
-                        shadowColor: "#000",
-                        shadowOffset: {
-                            width: 0,
-                            height: 2
-                        },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 4,
-                        elevation: 5,
-                        maxHeight: '80%',
-                        height: '100%',
-                        width: '95%'
-                    }}>
-                        <ScrollView>
-                            <Text>{text}</Text>
+        <View style={{
+            // flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 0
+        }}>
+            <View style={{
+                margin: 20,
+                backgroundColor: "white",
+                borderRadius: 20,
+                padding: 35,
+                alignItems: "center",
+                shadowColor: "#000",
+                shadowOffset: {
+                    width: 0,
+                    height: 2
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 4,
+                elevation: 5,
+                maxHeight: '87%',
+                height: '100%',
+                width: '95%'
+            }}>
+                <ScrollView>
+                    <Text>{text}</Text>
+                </ScrollView>
 
-                        </ScrollView>
-
-                        <Button onPress={() => onClose()}>Ok</Button>
-                        {/*<Button>Save</Button>*/}
-                        {/*<Button>Share</Button>*/}
-                    </View>
-                </View>
-            </Modal>)
+                <Button onPress={() => onClose()}>Ok</Button>
+                {/*<Button>Save</Button>*/}
+                {/*<Button>Share</Button>*/}
+            </View>
+        </View>
+    </Modal>)
 }
 
 export default function App() {
@@ -152,7 +152,7 @@ export default function App() {
         try {
             setLanguageRetrospectiveText('thinking...')
             const r = await vanjaCloudClient.languageRetrospective('es')
-            console.log('r',r)
+            console.log('r', r)
             setLanguageRetrospectiveText(r.response)
         } catch (e) {
             console.log(e, JSON.stringify(e))
@@ -166,7 +166,7 @@ export default function App() {
         try {
             setLanguageRetrospectiveText('thinking...')
             const r = await vanjaCloudClient.retrospective()
-            console.log('r',r)
+            console.log('r', r)
             setLanguageRetrospectiveText(r.response)
         } catch (e) {
             console.log(e, JSON.stringify(e))
@@ -179,7 +179,6 @@ export default function App() {
         <PaperProvider>
             <SafeAreaView style={{ flex: 1 }}>
 
-                {saving && <ActivityIndicator size="small" color="#AAAAAA"/>}
                 {showTranslation ?
                     <TranslatedView
                         translatedText={translatedText}
@@ -187,6 +186,7 @@ export default function App() {
                         onPressSave={handleSaveTranslation}
                     /> :
                     <MainView
+
                         inputText={inputText}
                         setInputText={setInputText}
                         onPressSave={onPressSave}
@@ -195,13 +195,15 @@ export default function App() {
                         errorText={errorText}
                         onClearErrorText={() => setErrorText(null)}
                     />
-
                 }
-                <View>
-                    <Button onPress={() => retrospective()}>Week Retrospective</Button>
-                    <Button onPress={() => languageRetrospective()}>Language Retrospective</Button>
-                </View>
-                <ShareableModalPopup text={languageRetrospectiveText} onClose={() => setLanguageRetrospectiveText(null)}/>
+                {!showTranslation &&
+                    <View>
+                        {saving && <ActivityIndicator size="small" color="#AAAAAA" />}
+                        <Button onPress={() => retrospective()}>Week Retrospective</Button>
+                        <Button onPress={() => languageRetrospective()}>Language Retrospective</Button>
+                    </View>
+                }
+                <ShareableModalPopup text={languageRetrospectiveText} onClose={() => setLanguageRetrospectiveText(null)} />
             </SafeAreaView>
         </PaperProvider>
     );

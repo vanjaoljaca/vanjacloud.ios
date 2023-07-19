@@ -99,6 +99,11 @@ export function TranslatedView({ translatedText, onPressBack, onPressSave }) {
         }
     })
 
+    function setSelection(t) {
+        handleSelectTargetTranslation(t.to)
+        setExpandedText(t.text)
+    }
+
     return (
         <>
             <DataTable>
@@ -111,12 +116,12 @@ export function TranslatedView({ translatedText, onPressBack, onPressSave }) {
                     <DataTable.Row key={t.to}>
                         <DataTable.Cell
                             style={[styles.cell, { backgroundColor: selectedLanguage === t.to ? '#ffe' : '#fff' }]}
-                            onPress={() => handleSelectTargetTranslation(t.to)}>
+                            onPress={() => setSelection(t)}>
                             {t.to}
                         </DataTable.Cell>
                         <DataTable.Cell
                             style={styles.cell}
-                            onPress={() => setExpandedText(t.text)}
+                            onPress={() => setSelection(t)}
                             onLongPress={() => Clipboard.setString(t.text)}>
                             {t.text}
                             {/*{expandedText === t.text ? t.text : t.text.substring(0, 40) + '...'}*/}
@@ -124,58 +129,67 @@ export function TranslatedView({ translatedText, onPressBack, onPressSave }) {
                     </DataTable.Row>
                 ))}
             </DataTable>
-            {expandedText && (
 
-                <View style={styles.expandedView}>
-                    <Text style={styles.expandedText}>{expandedText}</Text>
 
-                    <Button onPress={handleClose}>Close</Button>
-                    {selectedLanguage && <Button onPress={handleExplain}>🤔</Button>}
+            <View style={[styles.expandedView, { flex: 1 }]}>
+                {expandedText && (
+                    <>
+                        <ScrollView>
+                            <Text style={styles.expandedText}>{expandedText}</Text>
+                        </ScrollView>
 
-                </View>
+                        <View style={styles.buttonRow}>
+                            <Button onPress={handleClose}>Close</Button>
+                            {selectedLanguage && <Button onPress={handleExplain}>🤔</Button>}
+                        </View>
+                    </>
+                )}
+            </View >
 
-            )}
+
             <View style={styles.buttonRow}>
                 <Button onPress={onPressBack}>Back</Button>
                 <Button onPress={handlePressSave}>Save Translation</Button>
             </View>
 
 
-            {explanation != null && (
-                <Modal visible={explanation != null}>
-                    <View style={{
-                        // flex: 1,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: 7
-                    }}>
+            {
+                explanation != null && (
+                    <Modal visible={explanation != null}>
                         <View style={{
-                            margin: 20,
-                            backgroundColor: "white",
-                            borderRadius: 20,
-                            padding: 35,
+                            // flex: 1,
+                            justifyContent: "center",
                             alignItems: "center",
-                            shadowColor: "#000",
-                            shadowOffset: {
-                                width: 0,
-                                height: 2
-                            },
-                            shadowOpacity: 0.25,
-                            shadowRadius: 4,
-                            elevation: 5,
-                            maxHeight: '80%',
-                            height: '100%',
-                            width: '95%'
+                            marginTop: 7
                         }}>
-                            <ScrollView>
-                                <Text>{explanation}</Text>
+                            <View style={{
+                                margin: 20,
+                                backgroundColor: "white",
+                                borderRadius: 20,
+                                padding: 35,
+                                alignItems: "center",
+                                shadowColor: "#000",
+                                shadowOffset: {
+                                    width: 0,
+                                    height: 2
+                                },
+                                shadowOpacity: 0.25,
+                                shadowRadius: 4,
+                                elevation: 5,
+                                maxHeight: '80%',
+                                height: '100%',
+                                width: '95%'
+                            }}>
+                                <ScrollView>
+                                    <Text>{explanation}</Text>
 
-                            </ScrollView>
-                            <Button onPress={() => setExplanation(null)}>End</Button>
+                                </ScrollView>
+                                <Button onPress={() => setExplanation(null)}>End</Button>
+                            </View>
                         </View>
-                    </View>
-                </Modal>
-            )}
+                    </Modal>
+                )
+            }
 
         </>
     );
