@@ -9,9 +9,31 @@ import { VanjaCloudClient } from "./VanjaCloudClient";
 
 const vanjaCloudClient = new VanjaCloudClient()
 
+function getHashTags(text) {
+    const regex = /#[a-zA-Z0-9]+/g;
+    const matches = text.match(regex);
+    if (matches) {
+        return matches;
+    } else {
+        return [];
+    }
+}
+
 export function MainView({ inputText, setInputText, onPressSave, saving, translateText, errorText, onClearErrorText }) {
 
+    const tags = [
+        '#danger', '#idea', '#work',
+        '#feeling', '#wyd', '#mood',
+        '#ai', '#name', '#spanish',
+        '#app', '#singing', '#tiktok',
+        '#content', '#story', '#comedy',
+        '#code', '#lol', '#writing',
+        '#coulddo', '#shoulddo', '#followup',
+    ]
+
     const [menuVisible, setMenuVisible] = useState(false);
+    const [selectedTags, setSelectedTags] = useState([])
+    const [showingSaveModal, setShowingSaveModal] = useState(false);
 
     function handleClearErrorText() {
         onClearErrorText();
@@ -19,8 +41,21 @@ export function MainView({ inputText, setInputText, onPressSave, saving, transla
 
     const [menuAnchor, setMenuAnchor] = useState({ x: 0, y: 0 })
 
-    async function retrospective(type) {
+    function handlePressSaveOne() {
+        const t = getHashTags(inputText);
+        setSelectedTags(t);
+        setShowingSaveModal(true);
+    }
 
+    function handlePressSaveTwo() {
+        console.log('handlePressSaveTwo', inputText, selectedTags);
+        onPressSave(inputText, selectedTags);
+        setShowingSaveModal(false);
+        setSelectedTags([]);
+    }
+
+    function handleCancel() {
+        setShowingSaveModal(false);
     }
 
     return (
@@ -53,7 +88,7 @@ export function MainView({ inputText, setInputText, onPressSave, saving, transla
 
                     <Button
                         style={{ flex: 1 }}
-                        onPress={onPressSave}
+                        onPress={handlePressSaveOne}
                         mode="contained"
                     >
                         <Text>save</Text>
@@ -102,21 +137,6 @@ export function MainView({ inputText, setInputText, onPressSave, saving, transla
                             }}
                             title='Clear'
                         />
-
-                        <Menu.Item
-                            onPress={async () => {
-                                await retrospective('translation');
-                                setMenuVisible(false);
-                            }}
-                            title='Retrospective Translation'
-                        />
-                        <Menu.Item
-                            onPress={async () => {
-                                await retrospective('journal');
-                                setMenuVisible(false);
-                            }}
-                            title='Retrospective Journal'
-                        />
                     </Menu>
                 </View>
 
@@ -135,18 +155,21 @@ export function MainView({ inputText, setInputText, onPressSave, saving, transla
                     </View>
                 </KeyboardDismisser>
             </View>
-            <Modal visible={false}>
+            <Modal visible={showingSaveModal}>
                 <View style={{
                     // flex: 1,
                     justifyContent: "center",
                     alignItems: "center",
                     marginTop: 7
-                }}>
+                }}
+                    onTouchStart={() => {
+
+                    }}>
                     <View style={{
                         margin: 20,
                         backgroundColor: "white",
                         borderRadius: 20,
-                        padding: 35,
+                        padding: 20,
                         alignItems: "center",
                         shadowColor: "#000",
                         shadowOffset: {
@@ -160,25 +183,50 @@ export function MainView({ inputText, setInputText, onPressSave, saving, transla
                         height: '100%',
                         width: '95%'
                     }}>
-                        <ScrollView>
+                        <Text>Select tags:</Text>
+                        <Gap />
+                        {/* <ScrollView>
                             <Text>stuff</Text>
 
-                        </ScrollView>
-                        <View>
-                            {['#coulddo', '#shoulddo', '#woulddo'].map((tag) =>
-                                <Chip
+                        </ScrollView> */}
+                        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                            {tags.map((tag) => (
+                                <View
                                     key={tag}
-                                    style={{ height: 40 }}
-                                    selected={true}
-                                    onPress={() => console.log('Pressed')}>{tag}</Chip>
-                            )}
+                                    style={{ width: '33.3%', padding: 5 }}
+                                >
+                                    <Chip
+                                        icon={null}
+
+                                        style={{
+                                            height: 40,
+                                            backgroundColor: selectedTags.includes(tag) ? '#3f51b5' : 'rgba(255, 255, 0, 0.1)',
+                                        }}
+                                        compact={true}
+                                        selected={false}
+                                        onPress={() => setSelectedTags(t => {
+                                            if (t.includes(tag)) {
+                                                return t.filter(t => t != tag);
+                                            } else {
+                                                return [...t, tag];
+                                            }
+                                        })}
+                                    >
+                                        {tag}
+                                    </Chip>
+                                </View>
+                            ))}
                         </View>
 
-                        <Button>Cancel</Button>
-                        <Button>Stop</Button>
+
+                        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                            <Button onPress={handleCancel}>Cancel</Button>
+                            <Button onPress={() => handlePressSaveTwo()}>Save</Button>
+
+                        </View>
                     </View>
                 </View>
-            </Modal>
+            </Modal >
         </>
     )
         ;

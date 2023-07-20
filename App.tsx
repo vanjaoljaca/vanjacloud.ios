@@ -25,7 +25,7 @@ const dbid = Device.isDevice ? ThoughtDB.proddbid : ThoughtDB.testdbid;
 
 const translate = new AzureTranslate(Keys.azure.translate);
 
-export const isProd = true;
+
 
 const vanjaCloudClient = new VanjaCloudClient()
 
@@ -80,7 +80,8 @@ export default function App() {
     const [showTranslation, setShowTranslation] = useState(false);
     const [languageRetrospectiveText, setLanguageRetrospectiveText] = useState(null);
 
-    async function saveIt(text: string, categoryEmoji?) {
+    async function saveIt(text: string, categoryEmoji?, tags?) {
+        tags = tags || [];
         categoryEmoji = categoryEmoji || '🐿️';
         console.log('saving', text)
         const response = await notion.pages.create({
@@ -93,22 +94,27 @@ export default function App() {
                 database_id: dbid
             },
             properties: {
-                title: [
-                    {
-                        text: {
-                            content: text
+                Name: {
+                    title: [
+                        {
+                            text: {
+                                content: text
+                            }
                         }
-                    }
-                ]
+                    ],
+                },
+                Tags: {
+                    multi_select: tags.map(tag => ({ name: tag }))
+                }
             }
         });
         return text;
     }
 
-    async function onPressSave() {
+    async function onPressSave(inputText, selectedTags) {
         try {
             setSaving(true)
-            let r = await saveIt(inputText);
+            let r = await saveIt(inputText, '🐿️', selectedTags);
             console.log('saved it', r)
             setInputText('');
         } catch (error) {
@@ -141,8 +147,9 @@ export default function App() {
     }
 
     async function handleSaveTranslation(translations, preferredLanguage) {
+        preferredLanguage = preferredLanguage || 'unknown';
         setSaving(true);
-        await saveIt(JSON.stringify({ translations, preferredLanguage }), '👻');
+        await saveIt(JSON.stringify({ translations, preferredLanguage }), '👻', ['#translation', `#translation:${preferredLanguage}`]);
         setShowTranslation(false);
         setSaving(false);
     }

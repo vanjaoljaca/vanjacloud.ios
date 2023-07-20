@@ -1,17 +1,26 @@
-import { isProd } from "./App";
+import Config from "./Config";
 import axios from "axios";
+
+import * as Device from 'expo-device';
+
+function getUrl() {
+    // todo...
+    switch (true) {
+        case Config.isProd:
+            return 'https://myprodurl.com'
+        case Device.isDevice:
+            return 'http://localhost:3000'
+        default:
+            return "https://myclouddevurl.com"
+    }
+}
 
 export class VanjaCloudClient {
 
     private readonly url: string;
 
     constructor(url?) {
-        const vanjaCloudUrl = isProd
-            ? "https://cloud.vanja.oljaca.me"
-            : "https://dev.cloud.vanja.oljaca.me"; // http://localhost:3000
-
-
-        this.url = url || vanjaCloudUrl; // 'http://localhost:3000' //vanjaCloudUrl;
+        this.url = url || getUrl();
     }
 
     async main(api, body) {
