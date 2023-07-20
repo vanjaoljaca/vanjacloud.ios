@@ -19,6 +19,9 @@ function getHashTags(text) {
     }
 }
 
+import { Keyboard } from 'react-native';
+
+
 export function MainView({ inputText, setInputText, onPressSave, saving, translateText, errorText, onClearErrorText }) {
 
     const tags = [
@@ -44,6 +47,7 @@ export function MainView({ inputText, setInputText, onPressSave, saving, transla
     function handlePressSaveOne() {
         const t = getHashTags(inputText);
         setSelectedTags(t);
+        Keyboard.dismiss();
         setShowingSaveModal(true);
     }
 
