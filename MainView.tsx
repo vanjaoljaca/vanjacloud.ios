@@ -154,7 +154,9 @@ export function MainView({ inputText, setInputText, onPressSave, saving, transla
                         {/*<ProgressBar progress={0.5} color={'#3f51b5'} style={{height: 200}}/>*/}
 
                         <View style={{ height: 200, width: '100%' }}>
-                            <Text style={{ color: '#FF9a9a' }} onPress={handleClearErrorText}>{errorText}</Text>
+                            <ScrollView>
+                                <Text style={{ color: '#FF9a9a' }} onPress={handleClearErrorText}>{errorText}</Text>
+                            </ScrollView>
                         </View>
                     </View>
                 </KeyboardDismisser>

@@ -12,10 +12,7 @@ import { Button } from 'react-native-paper';
 import { VanjaCloudClient } from "./VanjaCloudClient";
 import { Gap } from './Gap';
 
-process.env['DEBUG'] = 'true'
-
 const Keys = vanjacloud.Keys;
-Keys.openai = process.env.OPENAI_API_KEY; // todo.. idk why this isnt being loaded, some build crap
 
 const notion = new Client({
     auth: Keys.notion
@@ -105,6 +102,11 @@ export default function App() {
                 },
                 Tags: {
                     multi_select: tags.map(tag => ({ name: tag }))
+                },
+                Date: {
+                    date: {
+                        start: new Date().toISOString()
+                    }
                 }
             }
         });
@@ -117,9 +119,9 @@ export default function App() {
             let r = await saveIt(inputText, '🐿️', selectedTags);
             console.log('saved it', r)
             setInputText('');
-        } catch (error) {
-            console.error(error)
-            setErrorText('error: ' + JSON.stringify(error));
+        } catch (e) {
+            console.error(e)
+            setErrorText('error: ' + JSON.stringify(e, null, 2));
         }
         setSaving(false)
     }
@@ -137,7 +139,7 @@ export default function App() {
             setShowTranslation(true);
         } catch (e) {
             console.error(e)
-            setErrorText('error: ' + JSON.stringify(e));
+            setErrorText('error: ' + JSON.stringify(e, null, 2));
         }
         setSaving(false)
     }

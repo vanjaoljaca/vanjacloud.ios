@@ -4,14 +4,14 @@ import axios from "axios";
 import * as Device from 'expo-device';
 
 function getUrl() {
-    // todo...
+    console.log('Device.isDevice', Device.isDevice)
     switch (true) {
-        case Config.isProd:
-            return 'https://myprodurl.com'
         case Device.isDevice:
-            return 'http://localhost:3000'
+            return 'https://cloud.vanja.oljaca.me'
+        case Config.isProd:
+            return 'https://cloud.vanja.oljaca.me' //return "https://dev.cloud.vanja.oljaca.me"
         default:
-            return "https://myclouddevurl.com"
+            return 'http://localhost:3000'
     }
 }
 
