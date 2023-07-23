@@ -20,19 +20,12 @@ function getHashTags(text) {
 }
 
 import { Keyboard } from 'react-native';
+import Config from "./Config";
 
 
 export function MainView({ inputText, setInputText, onPressSave, saving, translateText, errorText, onClearErrorText }) {
 
-    const tags = [
-        '#danger', '#idea', '#work',
-        '#feeling', '#wyd', '#mood',
-        '#ai', '#name', '#spanish',
-        '#app', '#singing', '#tiktok',
-        '#content', '#story', '#comedy',
-        '#code', '#lol', '#writing',
-        '#coulddo', '#shoulddo', '#followup',
-    ]
+    const tags = Config.tags;
 
     const [menuVisible, setMenuVisible] = useState(false);
     const [selectedTags, setSelectedTags] = useState([])
@@ -168,8 +161,9 @@ export function MainView({ inputText, setInputText, onPressSave, saving, transla
                     alignItems: "center",
                     marginTop: 7
                 }}
-                    onTouchStart={() => {
 
+                    onTouchStart={() => {
+                        setShowingSaveModal(false);
                     }}>
                     <View style={{
                         margin: 20,
@@ -187,8 +181,13 @@ export function MainView({ inputText, setInputText, onPressSave, saving, transla
                         elevation: 5,
                         maxHeight: '80%',
                         height: '100%',
-                        width: '95%'
-                    }}>
+                        width: '95%',
+
+                    }}
+                        onTouchStart={(e) => {
+                            e.stopPropagation()
+                        }
+                        }>
                         <Text>Select tags:</Text>
                         <Gap />
                         {/* <ScrollView>
