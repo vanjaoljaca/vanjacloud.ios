@@ -11,18 +11,14 @@ import { MainView } from "./MainView";
 import { Button } from 'react-native-paper';
 import { VanjaCloudClient } from "./VanjaCloudClient";
 import { Gap } from './Gap';
+import { ThoughtType } from 'vanjacloud.shared.js/dist/src/ThoughtDB';
 
 const Keys = vanjacloud.Keys;
 
-const notion = new Client({
-    auth: Keys.notion
-})
-
-const dbid = Device.isDevice ? ThoughtDB.proddbid : ThoughtDB.testdbid;
-
 const translate = new AzureTranslate(Keys.azure.translate);
 
-
+const thoughtDb = new ThoughtDB(Keys.notion,
+    Device.isDevice ? ThoughtDB.proddbid : ThoughtDB.testdbid);
 
 const vanjaCloudClient = new VanjaCloudClient()
 
@@ -77,46 +73,10 @@ export default function App() {
     const [showTranslation, setShowTranslation] = useState(false);
     const [languageRetrospectiveText, setLanguageRetrospectiveText] = useState(null);
 
-    async function saveIt(text: string, categoryEmoji?, tags?) {
-        tags = tags || [];
-        categoryEmoji = categoryEmoji || '🐿️';
-        console.log('saving', text)
-        const response = await notion.pages.create({
-            icon: {
-                type: "emoji",
-                emoji: categoryEmoji
-            },
-            parent: {
-                type: "database_id",
-                database_id: dbid
-            },
-            properties: {
-                Name: {
-                    title: [
-                        {
-                            text: {
-                                content: text
-                            }
-                        }
-                    ],
-                },
-                Tags: {
-                    multi_select: tags.map(tag => ({ name: tag }))
-                },
-                Date: {
-                    date: {
-                        start: new Date().toISOString()
-                    }
-                }
-            }
-        });
-        return text;
-    }
-
     async function onPressSave(inputText, selectedTags) {
         try {
             setSaving(true)
-            let r = await saveIt(inputText, '🐿️', selectedTags);
+            let r = await thoughtDb.saveIt2(inputText, ThoughtType.note, selectedTags);
             console.log('saved it', r)
             setInputText('');
         } catch (e) {
@@ -151,8 +111,9 @@ export default function App() {
     async function handleSaveTranslation(translations, preferredLanguage) {
         preferredLanguage = preferredLanguage || 'unknown';
         setSaving(true);
-        await saveIt(JSON.stringify({ translations, preferredLanguage }), '👻', ['#translation', `#translation:${preferredLanguage}`]);
-        setShowTranslation(false);
+        const r = await thoughtDb.saveIt2(JSON.stringify({ translations, preferredLanguage }),
+            ThoughtType.translation,
+            ['#translation', `#translation:${preferredLanguage}`]);
         setSaving(false);
     }
 
