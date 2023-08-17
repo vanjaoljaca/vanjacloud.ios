@@ -7,6 +7,7 @@ yarn global add eas-cli
 eas build --profile dev --platform ios
 eas build:run -p ios # might be needed
 ```
+
 ### Keys
 
 Don't forget to clear cache ``expo start -c``
@@ -45,11 +46,14 @@ eas build --profile preview --platform ios
 ```
 
 Can also push preview update instead
+
 ```shell
 NOTION_SECRET=<...> AZURE_TRANSLATE_KEY=<...> eas update --channel main
 ```
 
 ### Link to vanjacloudjs.shared
+
+``yarn dev`` expects this to be linked. remove LOCAL_BUILD=true if you dont want this
 
 ```shell
 cd ./lib/vanjacloudjs.shared && yarn link && yarn watch
@@ -61,6 +65,7 @@ yarn link vanjacloudjs.shared
 
 update: this is unresolved. not sure how to get this to actually load
 Metro build will pull keys from .env and put them into the dist JS. If you change .env, you will need to clear cache:
+
 ```shell
 expo start --clear
 ```

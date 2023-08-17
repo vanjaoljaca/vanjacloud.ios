@@ -8,7 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "push-dev-phone": "eas update --channel preview",
-    "dev": "yarn ios"
+    "dev": "LOCAL_BUILD=true yarn ios"
   },
   "dependencies": {
     "@azure/storage-blob": "^12.15.0",
@@ -24,6 +24,7 @@
     "expo-status-bar": "~1.6.0",
     "expo-updates": "~0.18.10",
     "global": "^4.4.0",
+    "moment": "^2.29.4",
     "openai": "^4.0.0-beta.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
