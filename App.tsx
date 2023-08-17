@@ -1,6 +1,6 @@
 import { Dimensions, SafeAreaView, View } from 'react-native'; // todo: move this
 import React, { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+
 import { ActivityIndicator, Chip, Provider as PaperProvider } from 'react-native-paper'
 import { Client } from "@notionhq/client"
 import * as Device from 'expo-device';
@@ -18,8 +18,13 @@ import { ShareableModalPopup } from './ShareableModalPopup';
 import * as FileSystem from 'expo-file-system';
 
 const Keys = vanjacloud.Keys;
+import uuid from 'react-native-uuid';
 
-const translate = new AzureTranslate(Keys.azure.translate);
+const translate = new AzureTranslate(Keys.azure.translate,
+    {
+        traceIdGenerator: () => uuid.v4() as string
+    }
+);
 
 const thoughtDb = new ThoughtDB(Keys.notion,
     Device.isDevice ? ThoughtDB.proddbid : ThoughtDB.testdbid);
@@ -131,13 +136,11 @@ function MainView2() {
         // to the translatedText state variable
         try {
             setSaving(true)
-            let r = await translate.translate(inputText, {
-                traceId: uuidv4()
-            });
+            let r = await translate.translate(inputText);
             setTranslatedText(r);
             setShowTranslation(true);
         } catch (e) {
-            console.error(e)
+            console.error(JSON.stringify(e, null, 2))
             setErrorText('error: ' + JSON.stringify(e, null, 2));
         }
         setSaving(false)
