@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5ae49b2-2fc9-4df0-babd-c26370ecf072" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="f5ae49b2-2fc9-4df0-babd-c26370ecf072" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -106,6 +104,7 @@
       <workItem from="1690022862397" duration="1573000" />
       <workItem from="1690366219076" duration="125720000" />
       <workItem from="1690870147466" duration="50000" />
+      <workItem from="1691061433846" duration="2906000" />
     </task>
     <task id="LOCAL-00001" summary="hack and slash, &#10;&#10;still dont understand how to make a good secrets strategy. seems I need 4 builds:&#10;&#10;1. github action eas update&#10;2. local eas update&#10;3. local simulator&#10;4. eas build&#10;&#10;it would have been nice to have 1 secrets management strategy for all, but this is turning out to be a nightmare so im just going to manually do secrets for each">
       <created>1675407451757</created>

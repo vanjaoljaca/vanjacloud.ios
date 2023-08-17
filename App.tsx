@@ -1,7 +1,7 @@
-import { Dimensions, SafeAreaView, ScrollView, View } from 'react-native'; // todo: move this
+import { Dimensions, SafeAreaView, View } from 'react-native'; // todo: move this
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { ActivityIndicator, Chip, Modal, Provider as PaperProvider, Text } from 'react-native-paper'
+import { ActivityIndicator, Chip, Provider as PaperProvider } from 'react-native-paper'
 import { Client } from "@notionhq/client"
 import * as Device from 'expo-device';
 import vanjacloud, { AzureTranslate, ThoughtDB } from "vanjacloud.shared.js";
@@ -12,6 +12,10 @@ import { Button } from 'react-native-paper';
 import { VanjaCloudClient } from "./VanjaCloudClient";
 import { Gap } from './Gap';
 import { ThoughtType } from 'vanjacloud.shared.js/dist/src/ThoughtDB';
+import { MyCameraTest } from './MyCameraTest';
+import { ShareableModalPopup } from './ShareableModalPopup';
+
+import * as FileSystem from 'expo-file-system';
 
 const Keys = vanjacloud.Keys;
 
@@ -23,55 +27,90 @@ const thoughtDb = new ThoughtDB(Keys.notion,
 const vanjaCloudClient = new VanjaCloudClient()
 
 const windowWidth = Dimensions.get('window').width;
-const cellWidth = windowWidth * 0.8 / 4;
 
-
-function ShareableModalPopup({ text, onClose }) {
-    return (<Modal visible={text != null && text != undefined}>
-        <View style={{
-            // flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 0
-        }}>
-            <View style={{
-                margin: 20,
-                backgroundColor: "white",
-                borderRadius: 20,
-                padding: 35,
-                alignItems: "center",
-                shadowColor: "#000",
-                shadowOffset: {
-                    width: 0,
-                    height: 2
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 4,
-                elevation: 5,
-                maxHeight: '87%',
-                height: '100%',
-                width: '95%'
-            }}>
-                <ScrollView>
-                    <Text>{text}</Text>
-                </ScrollView>
-
-                <Button onPress={() => onClose()}>Ok</Button>
-                {/*<Button>Save</Button>*/}
-                {/*<Button>Share</Button>*/}
-            </View>
-        </View>
-    </Modal>)
+class path {
+    static join(a: string, b: string) {
+        if (a.endsWith('/'))
+            return a + b;
+        return a + '/' + b;
+    }
 }
 
-export default function App() {
-    const [text, setText] = useState('unset');
+class CoolThing {
+
+    private items: [];
+
+    async queueItem() {
+
+        const UploadQueue = 'UploadQueue'
+        const UploadDirectory = path.join(FileSystem.documentDirectory, UploadQueue);
+
+        const contents = await FileSystem.readDirectoryAsync(UploadDirectory);
+        if (contents == null)
+            await FileSystem.makeDirectoryAsync(UploadDirectory)
+        console.log(contents);
+        // FileSystem.createUploadTask()
+        const jobName = new Date().toISOString() + '.job';
+        const jobData = {
+            test: true
+        };
+        await FileSystem.writeAsStringAsync(path.join(UploadDirectory, jobName), JSON.stringify(jobData))
+
+    }
+}
+
+function RetrospectivesScreen() {
+
+    const [thinking, setThinking] = useState(false);
+    const [text, setText] = useState<string>(null)
+
+
+    async function languageRetrospective() {
+        setThinking(true);
+        try {
+            setText('thinking...')
+            const r = await vanjaCloudClient.languageRetrospective('es')
+            console.log('r', r)
+            setText(r.response)
+        } catch (e) {
+            console.log(e, JSON.stringify(e))
+            setText(JSON.stringify(e))
+        }
+        setThinking(false);
+    }
+
+    async function retrospective() {
+        setThinking(true);
+        try {
+            setText('thinking...')
+            const r = await vanjaCloudClient.retrospective()
+            console.log('r', r)
+            setText(r.response)
+        } catch (e) {
+            console.log(e, JSON.stringify(e))
+            setText(JSON.stringify(e))
+        }
+        setThinking(false);
+    }
+
+    return (
+
+        <View style={{ flex: 1 }}>
+            {thinking && <ActivityIndicator size="small" color="#AAAAAA" />}
+            <Button onPress={() => retrospective()}>Week Retrospective</Button>
+            <Button onPress={() => languageRetrospective()}>Language Retrospective</Button>
+            <ShareableModalPopup text={text} onClose={() => setText(null)} />
+        </View>
+
+    )
+}
+
+function MainView2() {
     const [inputText, setInputText] = useState('');
     const [saving, setSaving] = useState(false);
     const [errorText, setErrorText] = useState(null);
     const [translatedText, setTranslatedText] = useState(null);
     const [showTranslation, setShowTranslation] = useState(false);
-    const [languageRetrospectiveText, setLanguageRetrospectiveText] = useState(null);
 
     async function onPressSave(inputText, selectedTags) {
         try {
@@ -108,80 +147,61 @@ export default function App() {
         setShowTranslation(false);
     }
 
-    async function handleSaveTranslation(translations, preferredLanguage) {
-        preferredLanguage = preferredLanguage || 'unknown';
-        setSaving(true);
-        const r = await thoughtDb.saveIt2(JSON.stringify({ translations, preferredLanguage }),
-            ThoughtType.translation,
-            ['#translation', `#translation:${preferredLanguage}`]);
-        setSaving(false);
-    }
+    async function handleSaveTranslation(translations, preferredLanguage?) {
 
-    async function languageRetrospective() {
         setSaving(true);
-        try {
-            setLanguageRetrospectiveText('thinking...')
-            const r = await vanjaCloudClient.languageRetrospective('es')
-            console.log('r', r)
-            setLanguageRetrospectiveText(r.response)
-        } catch (e) {
-            console.log(e, JSON.stringify(e))
-            setLanguageRetrospectiveText(JSON.stringify(e))
-        }
-        setSaving(false);
-    }
-
-    async function retrospective() {
-        setSaving(true);
-        try {
-            setLanguageRetrospectiveText('thinking...')
-            const r = await vanjaCloudClient.retrospective()
-            console.log('r', r)
-            setLanguageRetrospectiveText(r.response)
-        } catch (e) {
-            console.log(e, JSON.stringify(e))
-            setLanguageRetrospectiveText(JSON.stringify(e))
-        }
+        const r = await thoughtDb.saveTranslation(translations, preferredLanguage)
         setSaving(false);
     }
 
     return (
+        <View style={{ flex: 1 }}>
+            {showTranslation ?
+                <TranslatedView
+                    translatedText={translatedText}
+                    onPressBack={() => setShowTranslation(false)}
+                    onPressSave={handleSaveTranslation}
+                /> :
+                <MainView
+
+                    inputText={inputText}
+                    setInputText={setInputText}
+                    onPressSave={onPressSave}
+                    saving={saving}
+                    translateText={translateText}
+                    errorText={errorText}
+                    onClearErrorText={() => setErrorText(null)}
+                />
+            }
+            {saving && <ActivityIndicator size="small" color="#AAAAAA" />}
+        </View>
+    );
+}
+
+
+export default function App() {
+
+    const [currentScreen, setCurrentScreen] = useState(0);
+
+    return (
         <PaperProvider>
             <SafeAreaView style={{ flex: 1 }}>
-
-                {showTranslation ?
-                    <TranslatedView
-                        translatedText={translatedText}
-                        onPressBack={() => setShowTranslation(false)}
-                        onPressSave={handleSaveTranslation}
-                    /> :
-                    <MainView
-
-                        inputText={inputText}
-                        setInputText={setInputText}
-                        onPressSave={onPressSave}
-                        saving={saving}
-                        translateText={translateText}
-                        errorText={errorText}
-                        onClearErrorText={() => setErrorText(null)}
-                    />
-                }
-                {!showTranslation &&
-                    <View>
-                        {saving && <ActivityIndicator size="small" color="#AAAAAA" />}
-                        <Button onPress={() => retrospective()}>Week Retrospective</Button>
-                        <Button onPress={() => languageRetrospective()}>Language Retrospective</Button>
-                    </View>
-                }
-                <ShareableModalPopup text={languageRetrospectiveText} onClose={() => setLanguageRetrospectiveText(null)} />
+                { /* todo: tab thing */}
+                {/* <Button onPress={(e) => setCurrentScreen(s => s + 1)}>next</Button> */}
+                {currentScreen == 1 && <RetrospectivesScreen />}
+                {currentScreen == 0 && <MainView2 />}
+                {currentScreen == 2 && <MyCameraTest />}
             </SafeAreaView>
         </PaperProvider>
     );
 }
 
 
+
 async function debug() {
 
+    const c = new CoolThing();
+    await c.queueItem();
     return
 }
 

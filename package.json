@@ -11,13 +11,16 @@
     "dev": "yarn ios"
   },
   "dependencies": {
+    "@azure/storage-blob": "^12.15.0",
     "@eva-design/eva": "^2.1.1",
     "@expo/webpack-config": "^18.1.1",
     "@notionhq/client": "^2.2.3",
     "@types/react": "~18.2.14",
     "expo": "^49.0.0",
+    "expo-camera": "~13.4.2",
     "expo-dev-client": "~2.4.6",
     "expo-device": "~5.4.0",
+    "expo-file-system": "^15.4.2",
     "expo-status-bar": "~1.6.0",
     "expo-updates": "~0.18.10",
     "global": "^4.4.0",
@@ -36,5 +39,15 @@
     "@babel/core": "^7.20.0",
     "babel-plugin-inline-dotenv": "^1.7.0",
     "react-native-dotenv": "^3.4.9"
+  },
+  "expo": {
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
+        }
+      ]
+    ]
   }
 }
