@@ -24,11 +24,11 @@ export const Spacer = ({ height }: { height: number }) => {
     return <View style={{ height }} />;
 };
 
-const ConnectionString = 'DefaultEndpointsProtocol=https;AccountName=vanjacloud;AccountKey=H6vLpXx4w995rJh1qmlp/2NUWk2DaUCuHHMZ4rAwcqLQbZNXPar9wwg909ojGtUfTuBpPIgwmKoc+AStN2J5hQ==;EndpointSuffix=core.windows.net'
+const ConnectionString = 'rotated'
 const TargetContainer = 'vanja'
 const blobName = `video-${new Date().toISOString()}.mp4`;
-const SasToken = 'sp=racwl&st=2023-08-08T11:29:47Z&se=2026-04-01T19:29:47Z&spr=https&sv=2022-11-02&sr=c&sig=SIDznVzjRiXHSVLkF%2FiAaS7dNeh26JKW9i33EMKZ4eY%3D'
-const SasUrl = 'https://vanjacloud.blob.core.windows.net/vanja?sp=racwl&st=2023-08-08T11:29:47Z&se=2026-04-01T19:29:47Z&spr=https&sv=2022-11-02&sr=c&sig=SIDznVzjRiXHSVLkF%2FiAaS7dNeh26JKW9i33EMKZ4eY%3D'
+const SasToken = 'rotated'
+const SasUrl = 'rotated'
 
 export function MyCameraTest() {
     const cameraRef = useRef<Camera | null>(null);
