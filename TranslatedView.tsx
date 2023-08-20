@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Clipboard, Dimensions, ScrollView, StyleSheet, View } from "react-native";
-import { Button, DataTable, Modal, Text } from "react-native-paper";
+import { Clipboard, Dimensions, ScrollView, StyleSheet, View, Modal } from "react-native";
+import { Button, Text } from '@shoutem/ui';
 import { VanjaCloudClient } from "./VanjaCloudClient";
 
 const vanjaCloudClient = new VanjaCloudClient()
@@ -106,29 +106,33 @@ export function TranslatedView({ translatedText, onPressBack, onPressSave }) {
 
     return (
         <>
-            <DataTable>
-                <DataTable.Header>
-                    <DataTable.Title>Language</DataTable.Title>
-                    <DataTable.Title>Translation</DataTable.Title>
-                </DataTable.Header>
+            <View>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <Text>Language</Text>
+                    <Text>Translation</Text>
+                </View>
 
                 {translatedText.map(t => (
-                    <DataTable.Row key={t.to}>
-                        <DataTable.Cell
-                            style={[styles.cell, { backgroundColor: selectedLanguage === t.to ? '#ffe' : '#fff' }]}
+                    <View key={t.to} style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <Button
+                            styleName="secondary"
+                            style={[styles.cell, 
+                                selectedLanguage === t.to 
+                                    ? { backgroundColor: '#566' }
+                                    : {  }]}
                             onPress={() => setSelection(t)}>
-                            {t.to}
-                        </DataTable.Cell>
-                        <DataTable.Cell
+                            <Text>{t.to}</Text>
+                        </Button>
+                        <Button
+                            styleName="secondary"
                             style={styles.cell}
                             onPress={() => setSelection(t)}
                             onLongPress={() => Clipboard.setString(t.text)}>
-                            {t.text}
-                            {/*{expandedText === t.text ? t.text : t.text.substring(0, 40) + '...'}*/}
-                        </DataTable.Cell>
-                    </DataTable.Row>
+                            <Text>{t.text}</Text>
+                        </Button>
+                    </View>
                 ))}
-            </DataTable>
+            </View>
 
 
             <View style={[styles.expandedView, { flex: 1 }]}>
@@ -139,8 +143,8 @@ export function TranslatedView({ translatedText, onPressBack, onPressSave }) {
                         </ScrollView>
 
                         <View style={styles.buttonRow}>
-                            <Button onPress={handleClose}>Close</Button>
-                            {selectedLanguage && <Button onPress={handleExplain}>🤔</Button>}
+                            <Button onPress={handleClose}><Text>Close</Text></Button>
+                            {selectedLanguage && <Button onPress={handleExplain}><Text>🤔</Text></Button>}
                         </View>
                     </>
                 )}
@@ -148,8 +152,8 @@ export function TranslatedView({ translatedText, onPressBack, onPressSave }) {
 
 
             <View style={styles.buttonRow}>
-                <Button onPress={onPressBack}>Back</Button>
-                <Button onPress={handlePressSave}>Save Translation</Button>
+                <Button onPress={onPressBack}><Text>Back</Text></Button>
+                <Button onPress={handlePressSave}><Text>Save Translation</Text></Button>
             </View>
 
 
@@ -157,10 +161,10 @@ export function TranslatedView({ translatedText, onPressBack, onPressSave }) {
                 explanation != null && (
                     <Modal visible={explanation != null}>
                         <View style={{
-                            // flex: 1,
+                            flex: 1,
                             justifyContent: "center",
                             alignItems: "center",
-                            marginTop: 7
+                            // marginTop: 7
                         }}>
                             <View style={{
                                 margin: 20,
@@ -176,7 +180,7 @@ export function TranslatedView({ translatedText, onPressBack, onPressSave }) {
                                 shadowOpacity: 0.25,
                                 shadowRadius: 4,
                                 elevation: 5,
-                                maxHeight: '80%',
+                                maxHeight: '90%',
                                 height: '100%',
                                 width: '95%'
                             }}>
@@ -184,7 +188,7 @@ export function TranslatedView({ translatedText, onPressBack, onPressSave }) {
                                     <Text>{explanation}</Text>
 
                                 </ScrollView>
-                                <Button onPress={() => setExplanation(null)}>End</Button>
+                                <Button onPress={() => setExplanation(null)}><Text>End</Text></Button>
                             </View>
                         </View>
                     </Modal>

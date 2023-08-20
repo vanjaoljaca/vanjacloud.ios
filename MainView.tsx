@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { Clipboard, ScrollView, View } from "react-native";
-import { Button, Menu, Modal, Text, TextInput, ToggleButton } from "react-native-paper";
+import { Clipboard, ScrollView, TextInput, View, Modal } from "react-native";
 import KeyboardDismisser from "./src/KeyboardDismisser";
 import { Gap } from "./Gap";
+import { Text, Button } from '@shoutem/ui';
 
-import { Chip } from 'react-native-paper';
 import { VanjaCloudClient } from "./VanjaCloudClient";
 
 const vanjaCloudClient = new VanjaCloudClient()
@@ -21,6 +20,7 @@ function getHashTags(text) {
 
 import { Keyboard } from 'react-native';
 import Config from "./Config";
+import Chip from "./Chip";
 
 
 export function MainView({ inputText, setInputText, onPressSave, saving, translateText, errorText, onClearErrorText }) {
@@ -55,6 +55,7 @@ export function MainView({ inputText, setInputText, onPressSave, saving, transla
         setShowingSaveModal(false);
     }
 
+
     return (
         <>
             <View style={{
@@ -69,11 +70,11 @@ export function MainView({ inputText, setInputText, onPressSave, saving, transla
                 <View style={{ flex: 1, backgroundColor: '#fff', justifyContent: 'center' }}>
                     <View style={{ marginTop: 0 }}>
                         <TextInput
-                            mode='outlined'
+                            // mode='outlined'
                             multiline={true}
                             onChangeText={text => setInputText(text)}
                             value={inputText}
-                            label="Think here"
+                            // label="Think here"
                             style={{ height: 200 }}
                         />
                         <Gap />
@@ -99,42 +100,7 @@ export function MainView({ inputText, setInputText, onPressSave, saving, transla
                     >
                         <Text>translate</Text>
                     </Button>
-                    <Button
-                        style={{ flex: 0.3 }}
-                        onPress={(e) => {
-                            console.log('long press');
-                            const { nativeEvent } = e;
-                            const anchor = {
-                                x: nativeEvent.pageX,
-                                y: nativeEvent.pageY,
-                            };
-
-                            setMenuAnchor(anchor);
-                            setMenuVisible(true);
-                        }}
-
-                    >🫥</Button>
-                    <Menu
-                        anchor={menuAnchor}
-                        visible={menuVisible}
-                        onDismiss={() => setMenuVisible(false)}
-                    >
-                        <Menu.Item
-                            onPress={() => {
-                                Clipboard.setString(inputText)
-                                setMenuVisible(false);
-                            }}
-                            title='Copy'
-                        />
-
-                        <Menu.Item
-                            onPress={() => {
-                                setInputText('');
-                                setMenuVisible(false);
-                            }}
-                            title='Clear'
-                        />
-                    </Menu>
+                    
                 </View>
 
 
@@ -155,11 +121,11 @@ export function MainView({ inputText, setInputText, onPressSave, saving, transla
                 </KeyboardDismisser>
             </View>
             <Modal visible={showingSaveModal}>
-                <View style={{
-                    // flex: 1,
+            <View style={{
+                    flex: 1,
                     justifyContent: "center",
                     alignItems: "center",
-                    marginTop: 7
+                    marginTop: 0
                 }}
 
                     onTouchStart={() => {
@@ -208,7 +174,7 @@ export function MainView({ inputText, setInputText, onPressSave, saving, transla
                                             backgroundColor: selectedTags.includes(tag) ? '#3f51b5' : 'rgba(255, 255, 0, 0.1)',
                                         }}
                                         compact={true}
-                                        selected={false}
+                                        selected={selectedTags.includes(tag)}
                                         onPress={() => setSelectedTags(t => {
                                             if (t.includes(tag)) {
                                                 return t.filter(t => t != tag);
@@ -225,8 +191,8 @@ export function MainView({ inputText, setInputText, onPressSave, saving, transla
 
 
                         <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                            <Button onPress={handleCancel}>Cancel</Button>
-                            <Button onPress={() => handlePressSaveTwo()}>Save</Button>
+                            <Button onPress={handleCancel}><Text>Cancel</Text></Button>
+                            <Button onPress={() => handlePressSaveTwo()}><Text>Save</Text></Button>
 
                         </View>
                     </View>

@@ -1,19 +1,22 @@
-import { Dimensions, SafeAreaView, View } from 'react-native'; // todo: move this
+import { Dimensions, SafeAreaView } from 'react-native'; // todo: move this
 import React, { useState } from 'react';
-
-import { ActivityIndicator, Chip, Provider as PaperProvider } from 'react-native-paper'
+import { View, Button, Spinner, Text } from '@shoutem/ui';
 import { Client } from "@notionhq/client"
 import * as Device from 'expo-device';
-import vanjacloud, { AzureTranslate, ThoughtDB } from "vanjacloud.shared.js";
+import vanjacloud, { AzureTranslate, Thought } from "vanjacloud.shared.js";
+const ThoughtDB = Thought.ThoughtDB
+const ThoughtType = Thought.ThoughtType
 import { TranslatedView } from "./TranslatedView";
 import { MainView } from "./MainView";
 
-import { Button } from 'react-native-paper';
 import { VanjaCloudClient } from "./VanjaCloudClient";
 import { Gap } from './Gap';
-import { ThoughtType } from 'vanjacloud.shared.js/dist/src/ThoughtDB';
 import { MyCameraTest } from './MyCameraTest';
 import { ShareableModalPopup } from './ShareableModalPopup';
+import {  Screen, NavigationBar, Row, Title, Icon } from '@shoutem/ui';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+
 
 import * as FileSystem from 'expo-file-system';
 
@@ -99,12 +102,16 @@ function RetrospectivesScreen() {
     }
 
     return (
-
-        <View style={{ flex: 1 }}>
-            {thinking && <ActivityIndicator size="small" color="#AAAAAA" />}
-            <Button onPress={() => retrospective()}>Week Retrospective</Button>
-            <Button onPress={() => languageRetrospective()}>Language Retrospective</Button>
-            <ShareableModalPopup text={text} onClose={() => setText(null)} />
+        
+        <View styleName="flexible">
+            {thinking && <Spinner styleName="small" />}
+            <Button onPress={() => retrospective()}>
+                <Text>Week Retrospective</Text>
+            </Button>
+            <Button onPress={() => languageRetrospective()}>
+                <Text>Language Retrospective</Text>
+            </Button>
+            {/* <ShareableModalPopup text={text} onClose={() => setText(null)} /> */}
         </View>
 
     )
@@ -176,35 +183,57 @@ function MainView2() {
                     onClearErrorText={() => setErrorText(null)}
                 />
             }
-            {saving && <ActivityIndicator size="small" color="#AAAAAA" />}
+            {saving && <Spinner size="small" color="#AAAAAA" />}
         </View>
     );
 }
 
 
+import { MyScreen } from './MyScreen';
+
 export default function App() {
 
-    const [currentScreen, setCurrentScreen] = useState(0);
+    const [index, setIndex] = useState(0);
+  const routes = [
+    { key: 'first', title: 'Tab1', component: MainView2 },
+    { key: 'second', title: 'Tab2', component: RetrospectivesScreen },
+  ];
 
-    return (
-        <PaperProvider>
-            <SafeAreaView style={{ flex: 1 }}>
-                { /* todo: tab thing */}
-                {/* <Button onPress={(e) => setCurrentScreen(s => s + 1)}>next</Button> */}
-                {currentScreen == 1 && <RetrospectivesScreen />}
-                {currentScreen == 0 && <MainView2 />}
-                {currentScreen == 2 && <MyCameraTest />}
-            </SafeAreaView>
-        </PaperProvider>
-    );
+  const CurrentRoute = routes[index].component;
+
+  return (
+    <SafeAreaProvider>
+    
+     <SafeAreaView style={{ flex: 1 }}>
+    <Screen>
+      <NavigationBar
+    //   style={{ backgroundColor: 'blue' }}
+      leftComponent={<Text>text</Text>}
+        centerComponent={<Title>vanjacloud</Title>}
+
+        // styleName="inline"
+      />
+      <Row styleName="small" style={{ flex: 1 }}>
+        {routes.map((route, idx) => (
+          <Button styleName="clear" key={idx} onPress={() => setIndex(idx)}>
+            <Text>{route.title}</Text>
+          </Button>
+        ))}
+      </Row>
+      <View style={{ flex: 9 }}>
+        <CurrentRoute />
+      </View>
+    </Screen>
+    </SafeAreaView>
+    </SafeAreaProvider>
+  );
 }
-
 
 
 async function debug() {
 
     const c = new CoolThing();
-    await c.queueItem();
+    // await c.queueItem();
     return
 }
 
