@@ -1,3 +1,12 @@
+# What is this
+
+kek
+
+# JIRA
+
+1. Swipe up/down on translation screen instead of modal
+2. View recent translations?
+
 # Initial setup
 
 ### Development install

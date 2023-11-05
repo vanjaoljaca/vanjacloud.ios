@@ -1,16 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, View, Alert } from 'react-native';
-import expoCamera from 'expo-camera';
+import { Alert } from 'react-native';
+import { View, Button, Spinner, Text } from '@shoutem/ui';
 
-const AutoFocus = expoCamera?.AutoFocus;
-const Camera = expoCamera?.Camera;
+import Constants from 'expo-camera'
 
-import { BlobServiceClient } from '@azure/storage-blob';
-import * as FileSystem from 'expo-file-system';
-
+let expoCamera;
+try {
+    expoCamera = require('expo-camera')
+} catch (e) {
+    console.log('failed to load expo-camera', e)
+    expoCamera = null;
+}
 
 /*
 Todo:
+- confirm that camera works on device with these hax
 - record, switch camera, focus?
 - merge with other app parts
 - upload
@@ -31,7 +35,22 @@ const SasToken = 'rotated'
 const SasUrl = 'rotated'
 
 export function MyCameraTest() {
-    const cameraRef = useRef<Camera | null>(null);
+
+    if (!expoCamera) {
+        return <MyCameraTestDummy />
+    }
+
+    return <MyCameraTestReal />
+}
+
+export function MyCameraTestDummy() {
+    return <Text>bad</Text>
+}
+
+export function MyCameraTestReal() {
+    let expoCameraX = expoCamera as any
+    const cameraRef = useRef<Constants.Camera | null>(null);
+
     const [isRecording, setIsRecording] = useState(false);
     const [videoURI, setVideoURI] = useState<string>(''); // URI del video grabado
 
@@ -49,7 +68,7 @@ export function MyCameraTest() {
         if (cameraRef.current) {
 
             const videoConfig = {
-                quality: Camera.Constants.VideoQuality['2160p'],
+                quality: expoCamera.Constants.VideoQuality['2160p'],
                 maxFps: 60,
             };
             setIsRecording(true);
@@ -83,28 +102,28 @@ export function MyCameraTest() {
     };
 
     const uploadToAzure = async (videoURI) => {
-        const sasUrl = SasUrl; // Replace this with a call to your backend to get the SAS URL.
-        const blockBlobUrl = new azure.BlobURL(sasUrl, azure.StorageURL.newPipeline(new azure.AnonymousCredential()));
+        // const sasUrl = SasUrl; // Replace this with a call to your backend to get the SAS URL.
+        // const blockBlobUrl = new azure.BlobURL(sasUrl, azure.StorageURL.newPipeline(new azure.AnonymousCredential()));
 
-        const fileContent = await FileSystem.readAsStringAsync(videoURI, { encoding: FileSystem.EncodingType.Base64 });
-        const totalBlocks = Math.ceil(fileContent.length / blockSize);
-        const blockIds = [];
+        // const fileContent = await FileSystem.readAsStringAsync(videoURI, { encoding: FileSystem.EncodingType.Base64 });
+        // const totalBlocks = Math.ceil(fileContent.length / blockSize);
+        // const blockIds = [];
 
-        for (let i = 0; i < totalBlocks; i++) {
-            const blockId = btoa(String(i).padStart(6, '0'));
-            blockIds.push(blockId);
-            const start = i * blockSize;
-            const end = i < totalBlocks - 1 ? start + blockSize : fileContent.length;
-            const blockData = Buffer.from(fileContent.substring(start, end), 'base64');
+        // for (let i = 0; i < totalBlocks; i++) {
+        //     const blockId = btoa(String(i).padStart(6, '0'));
+        //     blockIds.push(blockId);
+        //     const start = i * blockSize;
+        //     const end = i < totalBlocks - 1 ? start + blockSize : fileContent.length;
+        //     const blockData = Buffer.from(fileContent.substring(start, end), 'base64');
 
-            await blockBlobUrl.stageBlock(blockId, blockData, blockData.length);
-        }
+        //     await blockBlobUrl.stageBlock(blockId, blockData, blockData.length);
+        // }
 
-        await blockBlobUrl.commitBlockList(blockIds.map((id) => ({ name: 'Uncommitted', value: id })));
+        // await blockBlobUrl.commitBlockList(blockIds.map((id) => ({ name: 'Uncommitted', value: id })));
 
-        await FileSystem.deleteAsync(videoURI);
-        setVideoURI('');
-        Alert.alert('Video uploaded to Azure and temporary file deleted');
+        // await FileSystem.deleteAsync(videoURI);
+        // setVideoURI('');
+        // Alert.alert('Video uploaded to Azure and temporary file deleted');
     };
 
     const blockSize = 4 * 1024 * 1024; // 4MB
@@ -113,8 +132,8 @@ export function MyCameraTest() {
 
     return (
         <View style={{ flex: 1 }}>
-            <Camera ref={cameraRef}
-                type={Camera.Constants.Type.back} style={{ flex: 1 }}
+            <expoCamera.Camera ref={cameraRef}
+                type={expoCamera.Constants.Type.back} style={{ flex: 1 }}
                 pictureSize='3840x2160'
 
                 autoFocus={AutoFocus.on} />

@@ -44,10 +44,6 @@ export function TranslatedView({ translatedText, onPressBack, onPressSave }) {
         setExpandedText(text);
     }
 
-    function handleClose() {
-        setExpandedText(null);
-    }
-
     async function handleExplain() {
         try {
             setExplanation('Thinking...')
@@ -100,8 +96,13 @@ export function TranslatedView({ translatedText, onPressBack, onPressSave }) {
     })
 
     function setSelection(t) {
-        handleSelectTargetTranslation(t.to)
-        setExpandedText(t.text)
+        if (selectedLanguage == t.to) {
+            handleSelectTargetTranslation(null)
+            setExpandedText(null)
+        } else {
+            handleSelectTargetTranslation(t.to)
+            setExpandedText(t.text)
+        }
     }
 
     return (
@@ -113,13 +114,13 @@ export function TranslatedView({ translatedText, onPressBack, onPressSave }) {
                 </View>
 
                 {translatedText.map(t => (
-                    <View key={t.to} style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <View key={t.to} style={{ flexDirection: 'row', justifyContent: 'space-between', height: 100 }}>
                         <Button
                             styleName="secondary"
-                            style={[styles.cell, 
-                                selectedLanguage === t.to 
-                                    ? { backgroundColor: '#566' }
-                                    : {  }]}
+                            style={[styles.cell,
+                            selectedLanguage === t.to
+                                ? { backgroundColor: '#566' }
+                                : {}]}
                             onPress={() => setSelection(t)}>
                             <Text>{t.to}</Text>
                         </Button>
@@ -143,7 +144,6 @@ export function TranslatedView({ translatedText, onPressBack, onPressSave }) {
                         </ScrollView>
 
                         <View style={styles.buttonRow}>
-                            <Button onPress={handleClose}><Text>Close</Text></Button>
                             {selectedLanguage && <Button onPress={handleExplain}><Text>🤔</Text></Button>}
                         </View>
                     </>
@@ -153,7 +153,7 @@ export function TranslatedView({ translatedText, onPressBack, onPressSave }) {
 
             <View style={styles.buttonRow}>
                 <Button onPress={onPressBack}><Text>Back</Text></Button>
-                <Button onPress={handlePressSave}><Text>Save Translation</Text></Button>
+                <Button onPress={handlePressSave}><Text>Done</Text></Button>
             </View>
 
 

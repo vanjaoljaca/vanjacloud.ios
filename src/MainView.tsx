@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Clipboard, ScrollView, TextInput, View, Modal } from "react-native";
-import KeyboardDismisser from "./src/KeyboardDismisser";
+import KeyboardDismisser from "./KeyboardDismisser";
 import { Gap } from "./Gap";
 import { Text, Button } from '@shoutem/ui';
 
@@ -64,24 +64,20 @@ export function MainView({ inputText, setInputText, onPressSave, saving, transla
                 marginRight: '7%',
                 marginTop: '15%',
                 marginBottom: '7%',
+                borderColor: '#ff0',
+                backgroundColor: '#0f0',
             }}>
-                {/* Top section for text input */}
-                <Gap />
-                <View style={{ flex: 1, backgroundColor: '#fff', justifyContent: 'center' }}>
-                    <View style={{ marginTop: 0 }}>
-                        <TextInput
-                            // mode='outlined'
-                            multiline={true}
-                            onChangeText={text => setInputText(text)}
-                            value={inputText}
-                            // label="Think here"
-                            style={{ height: 200 }}
-                        />
-                        <Gap />
-
-                    </View>
+                <View style={{ flex: 2, backgroundColor: '#0ff', borderColor: '#ff0', minHeight: '40%' }}>
+                    <TextInput
+                        // mode='outlined'
+                        multiline={true}
+                        onChangeText={text => setInputText(text)}
+                        value={inputText}
+                        // label="Think here"
+                        style={{ flex: 1 }}
+                    />
                 </View>
-                <Gap />
+
                 <View style={{ flexDirection: 'row' }}>
 
                     <Button
@@ -100,17 +96,12 @@ export function MainView({ inputText, setInputText, onPressSave, saving, transla
                     >
                         <Text>translate</Text>
                     </Button>
-                    
+
                 </View>
 
-
-                {/* Bottom section for progress bar and error text */
-                }
                 <KeyboardDismisser>
 
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        {/* Add progress bar component here */}
-                        {/*<ProgressBar progress={0.5} color={'#3f51b5'} style={{height: 200}}/>*/}
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#f00' }}>
 
                         <View style={{ height: 200, width: '100%' }}>
                             <ScrollView>
@@ -121,7 +112,7 @@ export function MainView({ inputText, setInputText, onPressSave, saving, transla
                 </KeyboardDismisser>
             </View>
             <Modal visible={showingSaveModal}>
-            <View style={{
+                <View style={{
                     flex: 1,
                     justifyContent: "center",
                     alignItems: "center",
