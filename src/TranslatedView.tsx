@@ -5,32 +5,63 @@ import { VanjaCloudClient } from "./VanjaCloudClient";
 
 const vanjaCloudClient = new VanjaCloudClient()
 
+const styles = StyleSheet.create({
+    expandedView: {
+        marginTop: 10,
+
+        backgroundColor: '#fff'
+    },
+    expandedText: {
+        padding: 10,
+    },
+    buttonRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    cell: {
+        flex: 1,
+        maxHeight: 100,
+    },
+});
+
+
+function TranslatedTable({ translatedText, selectedLanguage, setSelection }) {
+    return (
+        <View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Text>Language</Text>
+                <Text>Translation</Text>
+            </View>
+
+            {translatedText.map(t => (
+                <View key={t.to} style={{ flexDirection: 'row', justifyContent: 'space-between', height: 100 }}>
+                    <Button
+                        styleName="secondary"
+                        style={[styles.cell,
+                        selectedLanguage === t.to
+                            ? { backgroundColor: '#566' }
+                            : {}]}
+                        onPress={() => setSelection(t)}>
+                        <Text>{t.to}</Text>
+                    </Button>
+                    <Button
+                        styleName="secondary"
+                        style={styles.cell}
+                        onPress={() => setSelection(t)}
+                        onLongPress={() => Clipboard.setString(t.text)}>
+                        <Text>{t.text}</Text>
+                    </Button>
+                </View>
+            ))}
+        </View>
+    )
+}
+
 export function TranslatedView({ translatedText, onPressBack, onPressSave }) {
     const [expandedText, setExpandedText] = useState(null);
     const [selectedLanguage, setSelectedLanguage] = useState(null);
     const [explanation, setExplanation] = useState(null);
 
-    const screenHeight = Dimensions.get('window').height;
-    const maxCellHeight = (screenHeight * 0.75) / translatedText.length;
-
-    const styles = StyleSheet.create({
-        expandedView: {
-            marginTop: 10,
-
-            backgroundColor: '#fff'
-        },
-        expandedText: {
-            padding: 10,
-        },
-        buttonRow: {
-            flexDirection: 'row',
-            justifyContent: 'space-between'
-        },
-        cell: {
-            flex: 1,
-            maxHeight: maxCellHeight,
-        },
-    });
 
     function handleSelectTargetTranslation(to) {
         setSelectedLanguage(to);
@@ -107,33 +138,10 @@ export function TranslatedView({ translatedText, onPressBack, onPressSave }) {
 
     return (
         <>
-            <View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text>Language</Text>
-                    <Text>Translation</Text>
-                </View>
-
-                {translatedText.map(t => (
-                    <View key={t.to} style={{ flexDirection: 'row', justifyContent: 'space-between', height: 100 }}>
-                        <Button
-                            styleName="secondary"
-                            style={[styles.cell,
-                            selectedLanguage === t.to
-                                ? { backgroundColor: '#566' }
-                                : {}]}
-                            onPress={() => setSelection(t)}>
-                            <Text>{t.to}</Text>
-                        </Button>
-                        <Button
-                            styleName="secondary"
-                            style={styles.cell}
-                            onPress={() => setSelection(t)}
-                            onLongPress={() => Clipboard.setString(t.text)}>
-                            <Text>{t.text}</Text>
-                        </Button>
-                    </View>
-                ))}
-            </View>
+            <TranslatedTable
+                translatedText={translatedText}
+                selectedLanguage={selectedLanguage}
+                setSelection={setSelection} />
 
 
             <View style={[styles.expandedView, { flex: 1 }]}>

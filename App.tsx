@@ -41,7 +41,7 @@ class MockTranslate {
         to?: string[];
         from?: string;
         traceId?: string;
-    }): Promise<[]> {
+    }): Promise<Translation[]> {
         let result = Array.of('en', 'es').map(lang => {
             return {
                 text: lang + ': ' + text,

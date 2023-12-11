@@ -1,10 +1,10 @@
 import React from 'react';
-import { ScrollView, View, Modal } from 'react-native';
-import { Text, Button } from '@shoutem/ui';
+import { ScrollView, Modal } from 'react-native';
+import { Text, Button, View } from '@shoutem/ui';
 
 export function ShareableModalPopup({ text, onClose }) {
     return (
-        <Modal isVisible={text != null && text != undefined}>
+        <Modal visible={text != null && text != undefined}>
             <View styleName="fill-parent middle-center">
                 <View styleName="fill-parent middle-center">
                     <View style={{

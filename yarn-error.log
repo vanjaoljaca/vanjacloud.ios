@@ -1,8 +1,8 @@
 Arguments: 
-  /opt/homebrew/Cellar/node/20.4.0/bin/node /opt/homebrew/Cellar/yarn/1.22.19/libexec/bin/yarn.js add https://github.com/username/vanjaoljaca/vanjacloud.shared.js@main
+  /opt/homebrew/Cellar/node/20.4.0/bin/node /opt/homebrew/Cellar/yarn/1.22.19/libexec/bin/yarn.js add @vanjaoljaca/vanjacloud.shared.js#main
 
 PATH: 
-  /opt/homebrew/opt/ruby/bin:/opt/homebrew/lib/ruby/gems/3.2.0/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/homebrew/opt/ruby/bin:/opt/homebrew/lib/ruby/gems/3.2.0/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Users/vanjaoljaca/Library/Python/3.9/bin:/Applications/WebStorm.app/Contents/MacOS:/Users/vanjaoljaca/Library/Python/3.9/bin:/Applications/WebStorm.app/Contents/MacOS
+  /opt/homebrew/opt/ruby/bin:/opt/homebrew/lib/ruby/gems/3.2.0/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/homebrew/opt/ruby/bin:/opt/homebrew/lib/ruby/gems/3.2.0/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Users/vanjaoljaca/Library/Application Support/JetBrains/Toolbox/scripts:/Users/vanjaoljaca/Library/Python/3.9/bin:/Applications/WebStorm.app/Contents/MacOS:/Users/vanjaoljaca/Library/Application Support/JetBrains/Toolbox/scripts:/Users/vanjaoljaca/Library/Python/3.9/bin:/Applications/WebStorm.app/Contents/MacOS
 
 Yarn version: 
   1.22.19
@@ -14,17 +14,17 @@ Platform:
   darwin arm64
 
 Trace: 
-  Error: https://github.com/username/vanjaoljaca/vanjacloud.shared.js@main: Request failed "404 Not Found"
-      at ResponseError.ExtendableBuiltin (/opt/homebrew/Cellar/yarn/1.22.19/libexec/lib/cli.js:696:66)
-      at new ResponseError (/opt/homebrew/Cellar/yarn/1.22.19/libexec/lib/cli.js:802:124)
-      at Request.<anonymous> (/opt/homebrew/Cellar/yarn/1.22.19/libexec/lib/cli.js:66215:16)
+  Error: https://registry.yarnpkg.com/@vanjaoljaca%2fvanjacloud.shared.js#main: Not found
+      at params.callback [as _callback] (/opt/homebrew/Cellar/yarn/1.22.19/libexec/lib/cli.js:66145:18)
+      at self.callback (/opt/homebrew/Cellar/yarn/1.22.19/libexec/lib/cli.js:140890:22)
       at Request.emit (node:events:512:28)
-      at module.exports.Request.onRequestResponse (/opt/homebrew/Cellar/yarn/1.22.19/libexec/lib/cli.js:141767:10)
-      at ClientRequest.emit (node:events:512:28)
-      at HTTPParser.parserOnIncomingClient (node:_http_client:693:27)
-      at HTTPParser.parserOnHeadersComplete (node:_http_common:119:17)
-      at TLSSocket.socketOnData (node:_http_client:535:22)
-      at TLSSocket.emit (node:events:512:28)
+      at Request.<anonymous> (/opt/homebrew/Cellar/yarn/1.22.19/libexec/lib/cli.js:141862:10)
+      at Request.emit (node:events:512:28)
+      at IncomingMessage.<anonymous> (/opt/homebrew/Cellar/yarn/1.22.19/libexec/lib/cli.js:141784:12)
+      at Object.onceWrapper (node:events:626:28)
+      at IncomingMessage.emit (node:events:524:35)
+      at endReadableNT (node:internal/streams/readable:1378:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
 
 npm manifest: 
   {

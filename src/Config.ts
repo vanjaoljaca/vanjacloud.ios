@@ -1,6 +1,6 @@
 export default {
     isProd: true, // use prod db vs use a test db for spam
-    isMock: true, // mock out services for offline dev mode
+    isMock: false, // mock out services for offline dev mode
     tags: [
         '#danger', '#idea', '#work',
         '#feeling', '#wyd', '#mood',

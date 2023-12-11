@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Button, Spinner, Text } from '@shoutem/ui';
-import { vanjaCloudClient } from './App';
+import { vanjaCloudClient } from '../App';
 
 export function RetrospectivesScreen() {
 

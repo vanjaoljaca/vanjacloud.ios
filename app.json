@@ -20,7 +20,12 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "me.oljaca.vanjacloudios"
+      "bundleIdentifier": "me.oljaca.vanjacloudios",
+      "infoPlist": {
+        "UISupportsDocumentBrowser": true,
+        "UIFileSharingEnabled": true,
+        "LSSupportsOpeningDocumentsInPlace": true
+      }
     },
     "android": {
       "adaptiveIcon": {

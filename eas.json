@@ -17,15 +17,12 @@
         "resourceClass": "m-medium"
       }
     },
-    "main": {
-      "channel": "main",
-      "distribution": "internal",
-      "ios": {
-        "resourceClass": "m-medium"
-      }
-    },
     "preview": {
       "channel": "preview",
+      "distribution": "internal"
+    },
+    "main": {
+      "channel": "main",
       "distribution": "internal"
     }
   },

@@ -1,16 +1,34 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Alert } from 'react-native';
 import { View, Button, Spinner, Text } from '@shoutem/ui';
+import * as FileSystem from 'expo-file-system';
+import * as azure from '@azure/storage-blob';
+import { BlobServiceClient, StorageSharedKeyCredential, newPipeline } from '@azure/storage-blob';
 
-import Constants from 'expo-camera'
+import { hello } from '../modules/vanjacloud.ios.native';
 
-let expoCamera;
-try {
-    expoCamera = require('expo-camera')
-} catch (e) {
-    console.log('failed to load expo-camera', e)
-    expoCamera = null;
-}
+console.log('hello:', hello)
+console.log('result:', hello())
+
+// let ExpoCamera;
+// import('expo-camera').then(m => {
+//     ExpoCamera = m;
+// })
+// .catch(e => {
+//     console.log('failed to load expo camera', e);
+//     ExpoCamera = null;
+// })
+
+import * as ExpoCamera from 'expo-camera';
+console.log('sigh', ExpoCamera)
+// let ExpoCamera;
+// try {
+//     ExpoCamera = require('expo-camera')
+//     console.log('ExpoCamera loaded')
+// } catch (e) {
+//     console.log('failed to load expo-camera', e)
+//     ExpoCamera = null;
+// }
 
 /*
 Todo:
@@ -28,31 +46,16 @@ export const Spacer = ({ height }: { height: number }) => {
     return <View style={{ height }} />;
 };
 
-const ConnectionString = 'rotated'
-const TargetContainer = 'vanja'
-const blobName = `video-${new Date().toISOString()}.mp4`;
-const SasToken = 'rotated'
-const SasUrl = 'rotated'
-
 export function MyCameraTest() {
+    const cameraRef = useRef<ExpoCamera.Camera | null>(null);
 
-    if (!expoCamera) {
-        return <MyCameraTestDummy />
-    }
-
-    return <MyCameraTestReal />
-}
-
-export function MyCameraTestDummy() {
-    return <Text>bad</Text>
-}
-
-export function MyCameraTestReal() {
-    let expoCameraX = expoCamera as any
-    const cameraRef = useRef<Constants.Camera | null>(null);
 
     const [isRecording, setIsRecording] = useState(false);
     const [videoURI, setVideoURI] = useState<string>(''); // URI del video grabado
+    const [cameraDirection, setCameraDirection] = useState<ExpoCamera.CameraType>(ExpoCamera.CameraType.front);
+    const [cameraVisible, setCameraVisible] = useState(true)
+    const [cameraSmall, setCameraSmall] = useState(false)
+    const [directEyesViewVisible, setDirectEyesViewVisible] = useState(false)
 
     useEffect(() => {
         if (cameraRef?.current == null) return;
@@ -68,81 +71,109 @@ export function MyCameraTestReal() {
         if (cameraRef.current) {
 
             const videoConfig = {
-                quality: expoCamera.Constants.VideoQuality['2160p'],
+                quality: ExpoCamera.Constants.VideoQuality['2160p'],
                 maxFps: 60,
             };
+
             setIsRecording(true);
-            const video = await cameraRef.current.recordAsync(videoConfig);
 
-            // Guarda el video en un archivo temporal dentro de la aplicación
-            const tempVideoUri = FileSystem.documentDirectory + 'tempRecordedVideo3.mp4';
-            await FileSystem.moveAsync({
-                from: video.uri,
-                to: tempVideoUri,
-            });
+            try {
+                const video = await cameraRef.current.recordAsync(videoConfig);
 
-            FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then((files) => {
-                console.log('files', files)
-            })
+                // Guarda el video en un archivo temporal dentro de la aplicación
+                const date = new Date();
+                const formattedDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}_${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`;
+                const tempVideoUri = `${FileSystem.documentDirectory}video_${formattedDate}.mp4`;
 
-            setVideoURI(tempVideoUri);
+                await FileSystem.moveAsync({
+                    from: video.uri,
+                    to: tempVideoUri,
+                });
 
-            console.log('recording saved', tempVideoUri)
+                FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then((files) => {
+                    console.log('files', files)
+                })
+
+                setVideoURI(tempVideoUri);
+
+                console.log('recording saved', tempVideoUri)
+            } catch (e) {
+                // Error: Calling the 'record' function has failed
+                // → Caused by: This operation is not supported on the simulator
+                console.log('failed to record', e)
+            }
+
+            setIsRecording(false);
         } else {
             console.log('Camera being shit')
         }
     };
 
-    const stopRecording = () => {
+    const stopRecording = async () => {
         if (cameraRef.current) {
-            cameraRef.current.stopRecording();
-            setIsRecording(false);
-            console.log('recording stopped')
+            try {
+                await cameraRef.current.stopRecording();
+                console.log('sent recording stop')
+            } catch (e) {
+                // Error: Calling the 'record' function has failed
+                // → Caused by: This operation is not supported on the simulator
+                console.log('failed to send stop record', e)
+            }
         }
     };
 
-    const uploadToAzure = async (videoURI) => {
-        // const sasUrl = SasUrl; // Replace this with a call to your backend to get the SAS URL.
-        // const blockBlobUrl = new azure.BlobURL(sasUrl, azure.StorageURL.newPipeline(new azure.AnonymousCredential()));
+    ExpoCamera.CameraType.front
 
-        // const fileContent = await FileSystem.readAsStringAsync(videoURI, { encoding: FileSystem.EncodingType.Base64 });
-        // const totalBlocks = Math.ceil(fileContent.length / blockSize);
-        // const blockIds = [];
+    const flip = async () => {
+        if (isRecording)
+            await stopRecording(); // flip kills recording for some reason...
 
-        // for (let i = 0; i < totalBlocks; i++) {
-        //     const blockId = btoa(String(i).padStart(6, '0'));
-        //     blockIds.push(blockId);
-        //     const start = i * blockSize;
-        //     const end = i < totalBlocks - 1 ? start + blockSize : fileContent.length;
-        //     const blockData = Buffer.from(fileContent.substring(start, end), 'base64');
+        setCameraDirection(cameraDirection == ExpoCamera.CameraType.front
+            ? ExpoCamera.CameraType.back
+            : ExpoCamera.CameraType.front)
+    }
 
-        //     await blockBlobUrl.stageBlock(blockId, blockData, blockData.length);
-        // }
+    const toggleVisible = () => {
+        setCameraVisible(!cameraVisible)
+    }
 
-        // await blockBlobUrl.commitBlockList(blockIds.map((id) => ({ name: 'Uncommitted', value: id })));
+    const toggleSmall = () => {
+        setCameraSmall(!cameraSmall)
+    }
 
-        // await FileSystem.deleteAsync(videoURI);
-        // setVideoURI('');
-        // Alert.alert('Video uploaded to Azure and temporary file deleted');
-    };
-
-    const blockSize = 4 * 1024 * 1024; // 4MB
-
-
+    const toggleDirectEyesView = () => {
+        setDirectEyesViewVisible(!directEyesViewVisible);
+    }
 
     return (
         <View style={{ flex: 1 }}>
-            <expoCamera.Camera ref={cameraRef}
-                type={expoCamera.Constants.Type.back} style={{ flex: 1 }}
-                pictureSize='3840x2160'
 
-                autoFocus={AutoFocus.on} />
             <Button
-                title={isRecording ? 'Stop Recording' : 'Start Recording'}
-                onPress={isRecording ? stopRecording : startRecording}
-            />
-            {!isRecording && videoURI && <Button title="Subir a Azure" onPress={uploadToAzure} />}
+                onPress={isRecording ? stopRecording : startRecording}>
+                <Text>{isRecording ? 'Stop Recording 🔴' : 'Start Recording'}</Text>
+            </Button>
+            <Button
+                onPress={() => flip()}><Text>Flip</Text></Button>
+            <Button onPress={() => toggleVisible()}><Text>Hide</Text></Button>
+            <Button onPress={() => toggleSmall()}><Text>Small</Text></Button>
+            <Button onPress={() => toggleDirectEyesView()}><Text>Direct</Text></Button>
+
             <Spacer height={35} />
+
+            {directEyesViewVisible && (<View><Text>Directing Eyes Up!!</Text></View>)}
+            {/* 
+            <View style={{ backgroundColor: '#f00', flex: 1 }} />
+             */}
+            <ExpoCamera.Camera ref={cameraRef}
+                type={cameraDirection}
+                style={{
+                    flex: cameraSmall ? 0 : 1, // if cameraSmall is true, don't take up the whole screen
+                    width: cameraSmall ? 100 : 'auto', // if cameraSmall is true, set height to 160 dp
+                    height: cameraSmall ? (100 * 16 / 9) : 'auto',
+                    display: cameraVisible ? 'flex' : 'none'
+                }}
+                pictureSize='3840x2160'
+                autoFocus={ExpoCamera.AutoFocus.on} />
         </View>
     );
 }
