@@ -56,6 +56,7 @@ export function MyCameraTest() {
     const [cameraVisible, setCameraVisible] = useState(true)
     const [cameraSmall, setCameraSmall] = useState(false)
     const [directEyesViewVisible, setDirectEyesViewVisible] = useState(false)
+    const [camera4k, setCamera4k] = useState(false)
 
     useEffect(() => {
         if (cameraRef?.current == null) return;
@@ -71,7 +72,9 @@ export function MyCameraTest() {
         if (cameraRef.current) {
 
             const videoConfig = {
-                quality: ExpoCamera.Constants.VideoQuality['2160p'],
+                quality: ExpoCamera.Constants.VideoQuality[
+                    camera4k ? '2160p' : '1080p'
+                ],
                 maxFps: 60,
             };
 
@@ -145,25 +148,12 @@ export function MyCameraTest() {
         setDirectEyesViewVisible(!directEyesViewVisible);
     }
 
+    function toggle4k() {
+        setCamera4k(!camera4k);
+    }
+
     return (
         <View style={{ flex: 1 }}>
-
-            <Button
-                onPress={isRecording ? stopRecording : startRecording}>
-                <Text>{isRecording ? 'Stop Recording 🔴' : 'Start Recording'}</Text>
-            </Button>
-            <Button
-                onPress={() => flip()}><Text>Flip</Text></Button>
-            <Button onPress={() => toggleVisible()}><Text>Hide</Text></Button>
-            <Button onPress={() => toggleSmall()}><Text>Small</Text></Button>
-            <Button onPress={() => toggleDirectEyesView()}><Text>Direct</Text></Button>
-
-            <Spacer height={35} />
-
-            {directEyesViewVisible && (<View><Text>Directing Eyes Up!!</Text></View>)}
-            {/* 
-            <View style={{ backgroundColor: '#f00', flex: 1 }} />
-             */}
             <ExpoCamera.Camera ref={cameraRef}
                 type={cameraDirection}
                 style={{
@@ -172,8 +162,30 @@ export function MyCameraTest() {
                     height: cameraSmall ? (100 * 16 / 9) : 'auto',
                     display: cameraVisible ? 'flex' : 'none'
                 }}
-                pictureSize='3840x2160'
+                pictureSize={camera4k ? '3840x2160' : '1920:1080'}
                 autoFocus={ExpoCamera.AutoFocus.on} />
+                {/* //onFacesDetected */}
+
+            <Spacer height={35} />
+
+            
+            <Button
+                onPress={() => flip()}><Text>Flip</Text></Button>
+            <Button onPress={() => toggleVisible()}><Text>Hide</Text></Button>
+            <Button onPress={() => toggleSmall()}><Text>Small</Text></Button>
+            <Button onPress={() => toggleDirectEyesView()}><Text>Direct</Text></Button>
+            <Button onPress={() => toggle4k()}><Text>4k: {camera4k ? 'on' : 'off'}</Text></Button>
+
+            <Button
+                onPress={isRecording ? stopRecording : startRecording}>
+                <Text>{isRecording ? 'Stop Recording 🔴' : 'Start Recording'}</Text>
+            </Button>
+
+            {directEyesViewVisible && (<View><Text>Directing Eyes Up!!</Text></View>)}
+            {/* 
+            <View style={{ backgroundColor: '#f00', flex: 1 }} />
+             */}
+
         </View>
     );
 }

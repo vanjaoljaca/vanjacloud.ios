@@ -104,6 +104,7 @@ import Config from './src/Config';
 import { Translation } from 'vanjacloud.shared.js/dist/src/AzureTranslate';
 import { MainView2 } from './src/MainView2';
 import { RetrospectivesScreen } from './src/RetrospectivesScreen';
+import Microphoner from './src/Microphoner';
 
 export default function App() {
 
@@ -112,7 +113,8 @@ export default function App() {
     const routes = [
         { key: 'text-input', title: '(input)', component: <MainView2 /> },
         { key: 'retrospectives', title: '(retrospectives)', component: <RetrospectivesScreen /> },
-        { key: 'camera', title: '(camera)', component: <MyCameraTest /> }
+        { key: 'camera', title: '(camera)', component: <MyCameraTest /> },
+        { key: 'microphone', title: "(m)", component: <Microphoner />}
     ];
 
     const CurrentRoute = routes[index].component;
