@@ -127,7 +127,11 @@ export default function App() {
         if (nextAppState === 'active') {
             // microphoner.start();
             console.log('App has been opened or come to the foreground');
-            // await startRecording()
+            if (microphoner.isRecording)
+                await microphoner.stop();
+            else
+                await microphoner.start();
+            setIsRecording(microphoner.isRecording);
         } else if (nextAppState === 'background') {
             // microphoner.stop();
             console.log('App has gone to the background');
