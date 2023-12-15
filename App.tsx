@@ -133,7 +133,8 @@ export default function App() {
                 await microphoner.start();
             setIsRecording(microphoner.isRecording);
         } else if (nextAppState === 'background') {
-            // microphoner.stop();
+            if (microphoner.isRecording)
+                microphoner.stop();
             console.log('App has gone to the background');
         }
     };
