@@ -1,4 +1,4 @@
-import { AppState, Dimensions, SafeAreaView } from 'react-native'; // todo: move this
+import { AppState, AppStateStatus, Dimensions, SafeAreaView } from 'react-native'; // todo: move this
 import React, { useEffect, useState } from 'react';
 import { View, Button, Text } from '@shoutem/ui';
 import { Client } from "@notionhq/client"
@@ -9,7 +9,7 @@ export const ThoughtType = Thought.ThoughtType
 
 import { VanjaCloudClient } from "./src/VanjaCloudClient";
 import { Gap } from './src/Gap';
-import { MyCameraTest } from './src/MyCameraTest';
+import { MyCameraTest, Spacer } from './src/MyCameraTest';
 import { ShareableModalPopup } from './src/ShareableModalPopup';
 import { Screen, NavigationBar, Row, Title, Icon } from '@shoutem/ui';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -110,19 +110,6 @@ import SoundEffects from './src/SoundEffects';
 
 
 
-function Launcher() {
-    /*
-    sound record toggle & indicator ( & play?)
-    quick add text / translate button -> input screen
-    later: quick selfie video
-    */
-    return (<View>
-        <Text>Launcher</Text>
-        <Button onPress={async () => {
-            await SoundEffects.playBoop();
-        }}><Text>go</Text></Button>
-    </View>)
-}
 
 export default function App() {
 
@@ -134,12 +121,15 @@ export default function App() {
         };
     }, []);
 
-    const handleAppStateChange = async (nextAppState: string) => {
+    const handleAppStateChange = async (nextAppState: AppStateStatus) => {
+
         // this only works inside this component obviously
         if (nextAppState === 'active') {
+            // microphoner.start();
             console.log('App has been opened or come to the foreground');
             // await startRecording()
         } else if (nextAppState === 'background') {
+            // microphoner.stop();
             console.log('App has gone to the background');
         }
     };
@@ -150,11 +140,41 @@ export default function App() {
         { key: 'launcher', title: '', component: <Launcher /> },
         { key: 'text-input', title: '(input)', component: <MainView2 /> },
         { key: 'retrospectives', title: '(retrospectives)', component: <RetrospectivesScreen /> },
-        { key: 'camera', title: '(camera)', component: <MyCameraTest /> },
-        { key: 'microphone', title: "(m)", component: <Microphoner /> }
+        { key: 'camera', title: '(camera)', component: <MyCameraTest /> }
     ];
 
     const CurrentRoute = routes[index].component;
+
+
+    const [microphoner, _] = useState<Microphoner | null>(() => new Microphoner());
+    const [isRecording, setIsRecording] = useState(microphoner.isRecording);
+    function Launcher() {
+        /*
+        sound record toggle & indicator ( & play?)
+        quick add text / translate button -> input screen
+        later: quick selfie video
+        */
+        return (<View>
+            <Spacer height={35} />
+            <Button onPress={async () => {
+                if (microphoner.isRecording)
+                    await microphoner.stop();
+                else
+                    await microphoner.start();
+                setIsRecording(microphoner.isRecording);
+            }}><Text>{microphoner.isRecording ? 'stop 🔴' : 'record'}</Text></Button>
+            <Button onPress={async () => {
+                if (microphoner.isRecording)
+                    await microphoner.stop();
+                setIsRecording(microphoner.isRecording);
+                setIndex(1)
+            }}><Text>Write Text</Text></Button>
+            <Spacer height={35} />
+            <Button onPress={async () => {
+                await SoundEffects.playBoop();
+            }}><Text>boop</Text></Button>
+        </View>)
+    }
 
     return (
         <SafeAreaProvider>
@@ -164,7 +184,7 @@ export default function App() {
                     <NavigationBar
                         //   style={{ backgroundColor: 'blue' }}
                         //   leftComponent={<Text>text</Text>}
-                        centerComponent={<Button onPress={() => setIndex(0)}><Title>☁️ vanjacloud</Title></Button>}
+                        centerComponent={<Button onPress={() => setIndex(0)}><Title>☁️ vanjacloud </Title></Button>}
 
                     // styleName="inline"
                     />

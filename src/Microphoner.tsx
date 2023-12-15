@@ -1,41 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button, View } from 'react-native';
-import { Audio } from 'expo-av';
+import { Audio, InterruptionModeIOS } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 import * as Device from 'expo-device';
-import vanjacloud, { AzureTranslate, Thought } from "vanjacloud.shared.js";
+import vanjacloud from "vanjacloud.shared.js";
 
-import { AppState } from 'react-native';
-
-
-import { VanjaCloudClient } from "./VanjaCloudClient";
 import { ThoughtDB } from 'vanjacloud.shared.js/dist/src/ThoughtDB';
 import SoundEffects from './SoundEffects';
+import { RecordingOptionsPresets } from 'expo-av/build/Audio';
 const Keys = vanjacloud.Keys;
 
-const vanjaCloudClient = new VanjaCloudClient()
 export const thoughtDb = new ThoughtDB(Keys.notion,
     Device.isDevice ? ThoughtDB.proddbid : ThoughtDB.testdbid);
 
-console.log('audio2', Audio)
+class AudioRecorder {
+    private recording: Audio.Recording;
 
-const AudioRecorder = () => {
-    const [recording, setRecording] = useState<Audio.Recording>();
+    get isRecording() {
+        return !!this.recording;
+    }
 
-    const startRecording = async () => {
+    constructor() {
+
+    }
+
+    async start() {
         try {
             await Audio.requestPermissionsAsync();
+
+            await SoundEffects.playBoop(); // this has to be before the other stuff
+
             await Audio.setAudioModeAsync({
                 allowsRecordingIOS: true,
                 playsInSilentModeIOS: true,
+                interruptionModeIOS: InterruptionModeIOS.MixWithOthers
             });
-            const { recording } = await Audio.Recording.createAsync(
-                Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
-            );
-            await SoundEffects.playBoop();
-            setRecording(recording);
 
-            // todo: play a boop sound
+            const { recording } = await Audio.Recording.createAsync(
+                RecordingOptionsPresets.HIGH_QUALITY
+            );
+
+            this.recording = recording;
 
             // Guarda el video en un archivo temporal dentro de la aplicación
             const date = new Date();
@@ -58,21 +63,12 @@ const AudioRecorder = () => {
         }
     };
 
-    const stopRecording = async () => {
-        recording?.stopAndUnloadAsync();
-        const uri = recording?.getURI();
-        setRecording(undefined);
-        console.log('Recording stopped and stored at', uri);
-
-        // todo: queue up to load to notion
-        thoughtDb.saveIt2
+    async stop() {
+        this.recording?.stopAndUnloadAsync();
+        const uri = this.recording?.getURI();
+        this.recording = undefined;
+        console.log('Recording stopped');
     };
-
-    return (
-        <View>
-            <Button title={recording ? 'Stop Recording 🔴' : 'Start Recording!'} onPress={recording ? stopRecording : startRecording} />
-        </View>
-    );
 };
 
 export default AudioRecorder;
