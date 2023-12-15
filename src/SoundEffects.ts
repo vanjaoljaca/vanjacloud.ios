@@ -1,5 +1,4 @@
-
-import { Audio } from 'expo-av';
+import { Audio, AVPlaybackStatusToSet, InterruptionModeIOS } from 'expo-av';
 import soundFile from '../assets/bloop.mp3';
 
 export default {
@@ -9,6 +8,12 @@ export default {
 async function playSound() {
     const soundObject = new Audio.Sound();
     try {
+        await Audio.setAudioModeAsync({
+            allowsRecordingIOS: false,
+            interruptionModeIOS: InterruptionModeIOS.MixWithOthers,
+            playsInSilentModeIOS: true,
+        });
+
         await soundObject.loadAsync(soundFile);
         await soundObject.playAsync();
         console.log('playing', soundFile)
