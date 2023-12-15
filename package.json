@@ -7,7 +7,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "update-phone": "eas update --channel preview",
+    "update-phone": "LOCAL_BUILD=true eas update --channel preview",
     "dev": "LOCAL_BUILD=true yarn ios",
     "install-simulator": "eas build --profile dev-simulator --platform ios",
     "install-phone": "eas build --profile preview --platform ios"

@@ -20,7 +20,6 @@ console.log('result:', hello())
 // })
 
 import * as ExpoCamera from 'expo-camera';
-console.log('sigh', ExpoCamera)
 // let ExpoCamera;
 // try {
 //     ExpoCamera = require('expo-camera')
@@ -86,7 +85,11 @@ export function MyCameraTest() {
                 // Guarda el video en un archivo temporal dentro de la aplicación
                 const date = new Date();
                 const formattedDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}_${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`;
-                const tempVideoUri = `${FileSystem.documentDirectory}video_${formattedDate}.mp4`;
+                const targetDir = `${FileSystem.documentDirectory}video/`;
+
+                await FileSystem.makeDirectoryAsync(targetDir, { intermediates: true })
+
+                const tempVideoUri = `${targetDir}video_${formattedDate}.mp4`;
 
                 await FileSystem.moveAsync({
                     from: video.uri,

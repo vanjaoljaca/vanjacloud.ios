@@ -1,5 +1,5 @@
-import { Dimensions, SafeAreaView } from 'react-native'; // todo: move this
-import React, { useState } from 'react';
+import { AppState, Dimensions, SafeAreaView } from 'react-native'; // todo: move this
+import React, { useEffect, useState } from 'react';
 import { View, Button, Text } from '@shoutem/ui';
 import { Client } from "@notionhq/client"
 import * as Device from 'expo-device';
@@ -30,6 +30,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 quick look up conjugations
 */
+
 
 import * as FileSystem from 'expo-file-system';
 
@@ -105,16 +106,52 @@ import { Translation } from 'vanjacloud.shared.js/dist/src/AzureTranslate';
 import { MainView2 } from './src/MainView2';
 import { RetrospectivesScreen } from './src/RetrospectivesScreen';
 import Microphoner from './src/Microphoner';
+import SoundEffects from './src/SoundEffects';
+
+
+
+function Launcher() {
+    /*
+    sound record toggle & indicator ( & play?)
+    quick add text / translate button -> input screen
+    later: quick selfie video
+    */
+    return (<View>
+        <Text>Launcher</Text>
+        <Button onPress={async () => {
+            await SoundEffects.playBoop();
+        }}><Text>go</Text></Button>
+    </View>)
+}
 
 export default function App() {
+
+    useEffect(() => {
+        const subscription = AppState.addEventListener('change', handleAppStateChange);
+
+        return () => {
+            subscription.remove();
+        };
+    }, []);
+
+    const handleAppStateChange = async (nextAppState: string) => {
+        // this only works inside this component obviously
+        if (nextAppState === 'active') {
+            console.log('App has been opened or come to the foreground');
+            // await startRecording()
+        } else if (nextAppState === 'background') {
+            console.log('App has gone to the background');
+        }
+    };
 
     // const hasCam = false;
     const [index, setIndex] = useState(0);
     const routes = [
+        { key: 'launcher', title: '', component: <Launcher /> },
         { key: 'text-input', title: '(input)', component: <MainView2 /> },
         { key: 'retrospectives', title: '(retrospectives)', component: <RetrospectivesScreen /> },
         { key: 'camera', title: '(camera)', component: <MyCameraTest /> },
-        { key: 'microphone', title: "(m)", component: <Microphoner />}
+        { key: 'microphone', title: "(m)", component: <Microphoner /> }
     ];
 
     const CurrentRoute = routes[index].component;
@@ -127,7 +164,7 @@ export default function App() {
                     <NavigationBar
                         //   style={{ backgroundColor: 'blue' }}
                         //   leftComponent={<Text>text</Text>}
-                        centerComponent={<Title>☁️ vanjacloud</Title>}
+                        centerComponent={<Button onPress={() => setIndex(0)}><Title>☁️ vanjacloud</Title></Button>}
 
                     // styleName="inline"
                     />
