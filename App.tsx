@@ -178,6 +178,8 @@ export default function App() {
             <Button onPress={async () => {
                 await SoundEffects.playBoop();
             }}><Text>boop</Text></Button>
+            <Text>Selfie Cam</Text>
+            <Text>Fwd Cam</Text>
         </View>)
     }
 
