@@ -7,10 +7,10 @@ import vanjacloud, { AzureTranslate, Thought } from "vanjacloud.shared.js";
 const ThoughtDB = Thought.ThoughtDB
 export const ThoughtType = Thought.ThoughtType
 
-import { VanjaCloudClient } from "./src/VanjaCloudClient";
-import { Gap } from './src/Gap';
-import { MyCameraTest, Spacer } from './src/MyCameraTest';
-import { ShareableModalPopup } from './src/ShareableModalPopup';
+import { VanjaCloudClient } from "./src/utils/VanjaCloudClient";
+import { Gap } from './src/views/Gap';
+import { MyCameraTest, Spacer } from './src/tabs/MyCameraTest';
+import { ShareableModalPopup } from './src/utils/ShareableModalPopup';
 import { Screen, NavigationBar, Row, Title, Icon } from '@shoutem/ui';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -103,10 +103,10 @@ class CoolThing {
 import { MyScreen } from './src/MyScreen';
 import Config from './src/Config';
 import { Translation } from 'vanjacloud.shared.js/dist/src/AzureTranslate';
-import { MainView2 } from './src/MainView2';
-import { RetrospectivesScreen } from './src/RetrospectivesScreen';
-import Microphoner from './src/Microphoner';
-import SoundEffects from './src/SoundEffects';
+import { MainView2 } from './src/tabs/MainView2';
+import { RetrospectivesScreen } from './src/tabs/RetrospectivesScreen';
+import Microphoner from './src/tabs/Microphoner';
+import SoundEffects from './src/utils/SoundEffects';
 
 
 
