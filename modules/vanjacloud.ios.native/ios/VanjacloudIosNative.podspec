@@ -1,8 +1,8 @@
 Pod::Spec.new do |s|
   s.name           = 'VanjacloudIosNative'
   s.version        = '1.0.0'
-  s.summary        = 'A sample project summary'
-  s.description    = 'A sample project description'
+  s.summary        = 'Native inter-op module for vanjacloud.ios'
+  s.description    = 'All native code for vanjacloud.ios goes in here'
   s.author         = ''
   s.homepage       = 'https://docs.expo.dev/modules/'
   s.platform       = :ios, '13.0'

@@ -38,66 +38,66 @@ const Keys = vanjacloud.Keys;
 import uuid from 'react-native-uuid';
 
 class MockTranslate {
-    translate(text: string, opts?: {
-        to?: string[];
-        from?: string;
-        traceId?: string;
-    }): Promise<Translation[]> {
-        let result = Array.of('en', 'es').map(lang => {
-            return {
-                text: lang + ': ' + text,
-                to: lang
-            }
-        });
-        console.log('created translation result', result)
-        return Promise.resolve(result)
-    }
+  translate(text: string, opts?: {
+    to?: string[];
+    from?: string;
+    traceId?: string;
+  }): Promise<Translation[]> {
+    let result = Array.of('en', 'es').map(lang => {
+      return {
+        text: lang + ': ' + text,
+        to: lang
+      }
+    });
+    console.log('created translation result', result)
+    return Promise.resolve(result)
+  }
 }
 
 export const translate = Config.isMock
-    ? new MockTranslate()
-    : new AzureTranslate(Keys.azure.translate,
-        {
-            traceIdGenerator: () => uuid.v4() as string
-        }
-    );
+  ? new MockTranslate()
+  : new AzureTranslate(Keys.azure.translate,
+    {
+      traceIdGenerator: () => uuid.v4() as string
+    }
+  );
 
 export const thoughtDb = new ThoughtDB(Keys.notion,
-    Device.isDevice ? ThoughtDB.proddbid : ThoughtDB.testdbid);
+  Device.isDevice ? ThoughtDB.proddbid : ThoughtDB.testdbid);
 
 export const vanjaCloudClient = new VanjaCloudClient()
 
 const windowWidth = Dimensions.get('window').width;
 
 class path {
-    static join(a: string, b: string) {
-        if (a.endsWith('/'))
-            return a + b;
-        return a + '/' + b;
-    }
+  static join(a: string, b: string) {
+    if (a.endsWith('/'))
+      return a + b;
+    return a + '/' + b;
+  }
 }
 
 class CoolThing {
 
-    private items: [];
+  private items: [];
 
-    async queueItem() {
+  async queueItem() {
 
-        const UploadQueue = 'UploadQueue'
-        const UploadDirectory = path.join(FileSystem.documentDirectory, UploadQueue);
+    const UploadQueue = 'UploadQueue'
+    const UploadDirectory = path.join(FileSystem.documentDirectory, UploadQueue);
 
-        const contents = await FileSystem.readDirectoryAsync(UploadDirectory);
-        if (contents == null)
-            await FileSystem.makeDirectoryAsync(UploadDirectory)
-        console.log(contents);
-        // FileSystem.createUploadTask()
-        const jobName = new Date().toISOString() + '.job';
-        const jobData = {
-            test: true
-        };
-        await FileSystem.writeAsStringAsync(path.join(UploadDirectory, jobName), JSON.stringify(jobData))
+    const contents = await FileSystem.readDirectoryAsync(UploadDirectory);
+    if (contents == null)
+      await FileSystem.makeDirectoryAsync(UploadDirectory)
+    console.log(contents);
+    // FileSystem.createUploadTask()
+    const jobName = new Date().toISOString() + '.job';
+    const jobData = {
+      test: true
+    };
+    await FileSystem.writeAsStringAsync(path.join(UploadDirectory, jobName), JSON.stringify(jobData))
 
-    }
+  }
 }
 
 import { MyScreen } from './src/MyScreen';
@@ -113,115 +113,115 @@ import SoundEffects from './src/SoundEffects';
 
 export default function App() {
 
-    useEffect(() => {
-        const subscription = AppState.addEventListener('change', handleAppStateChange);
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
 
-        return () => {
-            subscription.remove();
-        };
-    }, []);
-
-    const handleAppStateChange = async (nextAppState: AppStateStatus) => {
-
-        // this only works inside this component obviously
-        if (nextAppState === 'active') {
-            // microphoner.start();
-            console.log('App has been opened or come to the foreground');
-            if (microphoner.isRecording)
-                await microphoner.stop();
-            else
-                await microphoner.start();
-            setIsRecording(microphoner.isRecording);
-        } else if (nextAppState === 'background') {
-            if (microphoner.isRecording)
-                microphoner.stop();
-            console.log('App has gone to the background');
-        }
+    return () => {
+      subscription.remove();
     };
+  }, []);
 
-    // const hasCam = false;
-    const [index, setIndex] = useState(0);
-    const routes = [
-        { key: 'launcher', title: '', component: <Launcher /> },
-        { key: 'text-input', title: '(input)', component: <MainView2 /> },
-        { key: 'retrospectives', title: '(retrospectives)', component: <RetrospectivesScreen /> },
-        { key: 'camera', title: '(camera)', component: <MyCameraTest /> }
-    ];
+  const handleAppStateChange = async (nextAppState: AppStateStatus) => {
 
-    const CurrentRoute = routes[index].component;
-
-
-    const [microphoner, _] = useState<Microphoner | null>(() => new Microphoner());
-    const [isRecording, setIsRecording] = useState(microphoner.isRecording);
-    function Launcher() {
-        /*
-        sound record toggle & indicator ( & play?)
-        quick add text / translate button -> input screen
-        later: quick selfie video
-        */
-        return (<View>
-            <Spacer height={35} />
-            <Button onPress={async () => {
-                if (microphoner.isRecording)
-                    await microphoner.stop();
-                else
-                    await microphoner.start();
-                setIsRecording(microphoner.isRecording);
-            }}><Text>{microphoner.isRecording ? 'stop 🔴' : 'record'}</Text></Button>
-            <Button onPress={async () => {
-                if (microphoner.isRecording)
-                    await microphoner.stop();
-                setIsRecording(microphoner.isRecording);
-                setIndex(1)
-            }}><Text>Write Text</Text></Button>
-            <Spacer height={35} />
-            <Button onPress={async () => {
-                await SoundEffects.playBoop();
-            }}><Text>boop</Text></Button>
-            <Text>Selfie Cam</Text>
-            <Text>Fwd Cam</Text>
-        </View>)
+    // this only works inside this component obviously
+    if (nextAppState === 'active') {
+      // microphoner.start();
+      console.log('App has been opened or come to the foreground');
+      if (microphoner.isRecording)
+        await microphoner.stop();
+      else
+        await microphoner.start();
+      setIsRecording(microphoner.isRecording);
+    } else if (nextAppState === 'background') {
+      if (microphoner.isRecording)
+        microphoner.stop();
+      console.log('App has gone to the background');
     }
+  };
 
-    return (
-        <SafeAreaProvider>
+  // const hasCam = false;
+  const [index, setIndex] = useState(0);
+  const routes = [
+    { key: 'launcher', title: '', component: <Launcher /> },
+    { key: 'text-input', title: '(input)', component: <MainView2 /> },
+    { key: 'retrospectives', title: '(retrospectives)', component: <RetrospectivesScreen /> },
+    { key: 'camera', title: '(camera)', component: <MyCameraTest /> }
+  ];
 
-            <SafeAreaView style={{ flex: 1 }}>
-                <Screen>
-                    <NavigationBar
-                        //   style={{ backgroundColor: 'blue' }}
-                        //   leftComponent={<Text>text</Text>}
-                        centerComponent={<Button onPress={() => setIndex(0)}><Title>☁️ vanjacloud </Title></Button>}
+  const CurrentRoute = routes[index].component;
 
-                    // styleName="inline"
-                    />
-                    <View style={{ flex: 9 }}>
-                        {/* <div style={{ backgroundColor: '#f00' }}> */}
-                        {CurrentRoute}
-                        {/* </div> */}
-                    </View>
 
-                    {/* Bottom Tabs */}
-                    <Row styleName="small" style={{ flex: 1 }}>
-                        {routes.map((route, idx) => (
-                            <Button styleName="clear" key={idx} onPress={() => setIndex(idx)}>
-                                <Text>{route.title}</Text>
-                            </Button>
-                        ))}
-                    </Row>
+  const [microphoner, _] = useState<Microphoner | null>(() => new Microphoner());
+  const [isRecording, setIsRecording] = useState(microphoner.isRecording);
+  function Launcher() {
+    /*
+    sound record toggle & indicator ( & play?)
+    quick add text / translate button -> input screen
+    later: quick selfie video
+    */
+    return (<View>
+      <Spacer height={35} />
+      <Button onPress={async () => {
+        if (microphoner.isRecording)
+          await microphoner.stop();
+        else
+          await microphoner.start();
+        setIsRecording(microphoner.isRecording);
+      }}><Text>{microphoner.isRecording ? 'stop 🔴' : 'record'}</Text></Button>
+      <Button onPress={async () => {
+        if (microphoner.isRecording)
+          await microphoner.stop();
+        setIsRecording(microphoner.isRecording);
+        setIndex(1)
+      }}><Text>Write Text</Text></Button>
+      <Spacer height={35} />
+      <Button onPress={async () => {
+        await SoundEffects.playBoop();
+      }}><Text>boop</Text></Button>
+      <Text>Selfie Cam</Text>
+      <Text>Fwd Cam</Text>
+    </View>)
+  }
 
-                </Screen>
-            </SafeAreaView>
-        </SafeAreaProvider >
-    );
+  return (
+    <SafeAreaProvider>
+
+      <SafeAreaView style={{ flex: 1 }}>
+        <Screen>
+          <NavigationBar
+            //   style={{ backgroundColor: 'blue' }}
+            //   leftComponent={<Text>text</Text>}
+            centerComponent={<Button onPress={() => setIndex(0)}><Title>☁️ vanjacloud </Title></Button>}
+
+          // styleName="inline"
+          />
+          <View style={{ flex: 9 }}>
+            {/* <div style={{ backgroundColor: '#f00' }}> */}
+            {CurrentRoute}
+            {/* </div> */}
+          </View>
+
+          {/* Bottom Tabs */}
+          <Row styleName="small" style={{ flex: 1 }}>
+            {routes.map((route, idx) => (
+              <Button styleName="clear" key={idx} onPress={() => setIndex(idx)}>
+                <Text>{route.title}</Text>
+              </Button>
+            ))}
+          </Row>
+
+        </Screen>
+      </SafeAreaView>
+    </SafeAreaProvider >
+  );
 }
 
 
 async function debug() {
 
-    const c = new CoolThing();
-    // await c.queueItem();
-    return
+  const c = new CoolThing();
+  // await c.queueItem();
+  return
 }
 
 debug()
