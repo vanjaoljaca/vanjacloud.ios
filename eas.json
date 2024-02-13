@@ -1,32 +1,32 @@
 {
-  "cli": {
-    "version": ">= 3.4.1"
-  },
-  "build": {
-    "dev-simulator": {
-      "developmentClient": true,
-      "distribution": "internal",
-      "ios": {
-        "simulator": true
-      }
+    "cli": {
+        "version": ">= 7.2.0",
     },
-    "dev-device": {
-      "developmentClient": true,
-      "distribution": "internal",
-      "ios": {
-        "resourceClass": "m-medium"
-      }
+    "build": {
+        "dev-simulator": {
+            "developmentClient": true,
+            "distribution": "internal",
+            "ios": {
+                "simulator": true
+            }
+        },
+        "dev-device": {
+            "developmentClient": true,
+            "distribution": "internal",
+            "ios": {
+                "resourceClass": "m-medium"
+            }
+        },
+        "preview": {
+            "channel": "preview",
+            "distribution": "internal"
+        },
+        "main": {
+            "channel": "main",
+            "distribution": "internal"
+        }
     },
-    "preview": {
-      "channel": "preview",
-      "distribution": "internal"
-    },
-    "main": {
-      "channel": "main",
-      "distribution": "internal"
+    "submit": {
+        "production": {}
     }
-  },
-  "submit": {
-    "production": {}
-  }
 }
