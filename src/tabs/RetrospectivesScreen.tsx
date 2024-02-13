@@ -45,18 +45,18 @@ export function RetrospectivesScreen() {
         <View styleName="flexible">
             {thinking && <Spinner styleName="small" />}
 
-            <ShareableModalPopup text={text} onClose={() => {
-                console.log('onClose')
-                setText(null)
-            }
-            } />
+
             <Button onPress={() => retrospective()}>
                 <Text>Week Retrospective</Text>
             </Button>
             <Button onPress={() => languageRetrospective()}>
                 <Text>Language Retrospective</Text>
             </Button>
-
+            <ShareableModalPopup text={text} onClose={() => {
+                console.log('onClose')
+                setText(null)
+            }
+            } />
         </View>
 
     );

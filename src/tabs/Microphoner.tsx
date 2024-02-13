@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
 import { BackHandler, Button, View } from 'react-native';
 import { Audio, InterruptionModeIOS } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 import * as Device from 'expo-device';
 import vanjacloud from "vanjacloud.shared.js";
 
-import { ThoughtDB } from 'vanjacloud.shared.js/dist/src/ThoughtDB';
+import { Thought } from 'vanjacloud.shared.js';
 import SoundEffects from '../utils/SoundEffects';
 import { RecordingOptionsPresets } from 'expo-av/build/Audio';
 const Keys = vanjacloud.Keys;
@@ -76,8 +75,8 @@ async function registerBackgroundFetchAsync() {
 
 registerBackgroundFetchAsync();
 
-export const thoughtDb = new ThoughtDB(Keys.notion,
-    Device.isDevice ? ThoughtDB.proddbid : ThoughtDB.testdbid);
+export const thoughtDb = new Thought.ThoughtDB(Keys.notion,
+    Device.isDevice ? Thought.ThoughtDB.proddbid : Thought.ThoughtDB.testdbid);
 
 class Directories {
 

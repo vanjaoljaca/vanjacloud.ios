@@ -6,50 +6,51 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export function ShareableModalPopup({ text, onClose }) {
     return (
-        <Modal isVisible={text != null && text != undefined}>
-            <GestureHandlerRootView>
+        <Modal isVisible={text != null && text != undefined} onTouchEnd={() => onClose()}
+            style={{ backgroundColor: 'green' }}>
+            {/* <GestureHandlerRootView> */}
+            <View styleName="fill-parent middle-center">
+
                 <View styleName="fill-parent middle-center">
+                    <View style={{
+                        margin: 20,
+                        backgroundColor: "white",
+                        borderRadius: 20,
+                        padding: 35,
+                        alignItems: "center",
+                        shadowColor: "#000",
+                        shadowOffset: {
+                            width: 0,
+                            height: 2
+                        },
+                        shadowOpacity: 0.25,
+                        shadowRadius: 4,
+                        elevation: 5,
+                        maxHeight: '87%',
+                        height: '100%',
+                        width: '95%'
+                    }}>
 
-                    <View styleName="fill-parent middle-center">
-                        <View style={{
-                            margin: 20,
-                            backgroundColor: "white",
-                            borderRadius: 20,
-                            padding: 35,
-                            alignItems: "center",
-                            shadowColor: "#000",
-                            shadowOffset: {
-                                width: 0,
-                                height: 2
-                            },
-                            shadowOpacity: 0.25,
-                            shadowRadius: 4,
-                            elevation: 5,
-                            maxHeight: '87%',
-                            height: '100%',
-                            width: '95%'
+                        <Button styleName="dark" onPress={() => {
+                            console.log('onClose')
+                            onClose()
+                        }} title='ok'>
+
+                            {/* <Text>Ok</Text> */}
+                        </Button>
+
+                        <ScrollView style={{ backgroundColor: 'red' }} onTouchEnd={() => {
+                            console.log('onClose')
+                            onClose()
                         }}>
-
-                            <Button styleName="dark" onPress={() => {
-                                console.log('onClose')
-                                onClose()
-                            }} title='ok'>
-
-                                {/* <Text>Ok</Text> */}
-                            </Button>
-
-                            <ScrollView style={{ backgroundColor: 'red' }} onTouchEnd={() => {
-                                console.log('onClose')
-                                onClose()
-                            }}>
-                                <Text>{text}</Text>
-                            </ScrollView>
+                            <Text>{text}</Text>
+                        </ScrollView>
 
 
-                        </View>
                     </View>
                 </View>
-            </GestureHandlerRootView>
+            </View>
+            {/* </GestureHandlerRootView> */}
         </Modal>
     );
 }

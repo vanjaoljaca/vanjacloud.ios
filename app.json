@@ -1,53 +1,53 @@
 {
-  "expo": {
-    "name": "vanjacloudios",
-    "slug": "vanjacloudios",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0,
-      "url": "https://u.expo.dev/ad84c1be-dcc4-489d-a9c7-1b3ccd76a6b7"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "me.oljaca.vanjacloudios",
-      "infoPlist": {
-        "UISupportsDocumentBrowser": true,
-        "UIFileSharingEnabled": true,
-        "LSSupportsOpeningDocumentsInPlace": true
-      }
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      "react-native-vision-camera",
-      "expo-build-properties"
-    ],
-    "extra": {
-      "eas": {
-        "projectId": "ad84c1be-dcc4-489d-a9c7-1b3ccd76a6b7"
-      }
-    },
-    "owner": "vanjaoljaca",
-    "runtimeVersion": {
-      "policy": "sdkVersion"
+    "expo": {
+        "name": "vanjacloudios",
+        "slug": "vanjacloudios",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "./assets/icon.png",
+        "userInterfaceStyle": "light",
+        "splash": {
+            "image": "./assets/splash.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff"
+        },
+        "updates": {
+            "fallbackToCacheTimeout": 0,
+            "url": "https://u.expo.dev/ad84c1be-dcc4-489d-a9c7-1b3ccd76a6b7"
+        },
+        "assetBundlePatterns": [
+            "**/*"
+        ],
+        "ios": {
+            "supportsTablet": true,
+            "bundleIdentifier": "me.oljaca.vanjacloudios",
+            "infoPlist": {
+                "UISupportsDocumentBrowser": true,
+                "UIFileSharingEnabled": true,
+                "LSSupportsOpeningDocumentsInPlace": true
+            }
+        },
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/adaptive-icon.png",
+                "backgroundColor": "#FFFFFF"
+            }
+        },
+        "web": {
+            "favicon": "./assets/favicon.png"
+        },
+        "plugins": [
+            "react-native-vision-camera",
+            "expo-build-properties"
+        ],
+        "extra": {
+            "eas": {
+                "projectId": "ad84c1be-dcc4-489d-a9c7-1b3ccd76a6b7"
+            }
+        },
+        "owner": "vanjaoljaca",
+        "runtimeVersion": {
+            "policy": "sdkVersion"
+        }
     }
-  }
 }
