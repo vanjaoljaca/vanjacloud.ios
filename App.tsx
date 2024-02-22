@@ -60,13 +60,9 @@ class MockTranslate {
     }
 }
 
-export const translate = Config.isMock
-    ? new MockTranslate()
-    : new AzureTranslate(Keys.azure.translate,
-        {
-            traceIdGenerator: () => uuid.v4() as string
-        }
-    );
+// export const translate = Config.isMock
+//     ? new MockTranslate()
+//     : vanjaCloudClient; //traceIdGenerator: () => uuid.v4() as string
 
 export const thoughtDb = new ThoughtDB(Keys.notion,
     Device.isDevice ? ThoughtDB.proddbid : ThoughtDB.testdbid);

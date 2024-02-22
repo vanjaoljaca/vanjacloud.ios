@@ -16,7 +16,7 @@ export function RetrospectivesScreen() {
             setText('thinking...');
             const r = await vanjaCloudClient.languageRetrospective('es');
             console.log('r', r);
-            setText(r.response);
+            setText(r.text);
         } catch (e) {
             console.log(e, JSON.stringify(e));
             setText(JSON.stringify(e));

@@ -1,5 +1,6 @@
 import Config from "../Config";
 import axios from "axios";
+import moment from "moment";
 
 import * as Device from 'expo-device';
 
@@ -14,6 +15,19 @@ function getUrl() {
             return 'http://localhost:3000'
     }
 }
+
+
+export interface Translation {
+    text: string;
+    to: string;
+}
+
+interface AzureTranslateOpts {
+    endpoint?: string,
+    location?: string,
+    traceIdGenerator?: () => string
+}
+
 
 export class VanjaCloudClient {
 
@@ -37,17 +51,25 @@ export class VanjaCloudClient {
         return response.data;
     }
 
-    async languageRetrospective(language) {
-        const response = await axios.post(`${this.url}/languageretrospective`, {
-            target: language,
+    async languageRetrospective(language, duration?: moment.Duration) {
+        console.log('this.url', this.url)
+        const response = await axios.post(`${this.url}/retrospective`, {
+            // target: language,
+            prompt: `
+                Write a short story in language '${language}' and make it entertaining. It will be used for remembering past translation requests
+                in a relevant way. Use all the provided data and make it fun and tie it together in a memorable way. Repetition is allowed if relevant.
+                Highlight the supplied references in bold so that they are easily recognizable.`,
+            duration
         });
         return response.data;
     }
 
-    async retrospective() {
+    async retrospective(prompt?: string, duration?: moment.Duration) {
         console.log('this.url', this.url)
         const response = await axios.post(`${this.url}/retrospective`, {
             // target: language,
+            prompt,
+            duration
         });
         return response.data;
     }
@@ -67,5 +89,20 @@ export class VanjaCloudClient {
         });
 
         return response.ok
+    }
+
+
+    async translate(text: string, opts?: { to?: string[], from?: string, traceId?: string }): Promise<Translation[]> {
+
+        const defaultTo = ['en', 'de', 'es', 'sr-Cyrl-BA'];
+
+        const response = await axios.post(`${this.url}/translate`, {
+            text: text,
+            to: opts?.to || defaultTo,
+            from: opts?.from,
+            traceId: opts?.traceId
+        });
+
+        return response.data as Translation[];
     }
 }
